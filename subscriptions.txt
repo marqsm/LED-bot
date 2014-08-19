@@ -1,0 +1,178 @@
+455 Broadway
+algorithms
+announce
+beanbags
+blogging
+cats
+checkins
+clothes
+code review
+commits
+Congratulations
+coq
+Daily Logs
+Feminism
+food
+friday-jobs-prep
+gif-bot-test-stream
+git
+hardware
+haskell
+help
+housing
+jobs
+meditation
+network
+ocaml
+off-topic
+Oops
+OSS at HS
+pairing
+programming
+projects
+python
+rust
+social
+tools
+Victory
+writing review
+zulip
+(deprecated)
+1 Liberty Plaza
+137 Varick St
+6502
+algorithm-exercises
+alumni
+Android
+arcadebot
+arduino
+audio programming
+bangbangcon
+ben-eath
+bittorrent
+books
+Brain teasers
+Broadcasts
+Broadway
+C
+C++
+Cached Conf
+chessbot
+clojure
+ClojureScript Compiler
+common-lisp
+Community
+compilers
+coq tutorial
+couchsurfing
+coursera pl clourse
+coursera PL course
+crossfit
+CTM course
+D3
+data
+DevOps
+dijkstra
+distroweb
+diy computer
+elixir
+elm
+emacs-users
+erlang
+experimental music/art
+fight club
+Foodies
+functional data structures
+game dev
+go
+golang
+graph databases
+graphics
+Hackathons!
+hacker-music
+Hackettes
+haklsdjfas
+home improvement
+HS Book
+HS Meetups
+html5
+ICFP 2013 Contest
+InfoSec
+interactive fiction
+intro to databases course
+Iron Blogger
+iron forger
+Java
+javascript
+julia
+julia webstack doc-a-thon
+LightTable
+linux
+Linux kernel
+lockpicking
+lovelace
+lua
+lunch circle
+machine learning
+math
+Matlab
+meta
+miniKanren
+mongodb
+music
+music software
+musicians
+nand2tetris
+newish hackers
+node
+Node.js
+objective-c
+off the wall
+opennote
+papers
+participation
+PIG
+ploy
+poker
+princeton algos coursera
+Project Tango
+pushups etc
+quiltbag+
+racket
+remote support group
+Riley's Page
+risk
+ruby
+russell-checkin
+San Francisco
+sandbox
+scala
+SICP slowly
+SICP study group
+SICP-summer2013
+singing
+spot-the-fail
+stanford algos coursera
+statistics
+Stripe CTF
+Sublime
+Sudokubot
+Swift
+systems papers reading group
+tapl
+tech policy
+test-bot
+test-bot2
+test-stream
+testbot
+the priority q (algorithms 2014)
+tictax
+ttrpg
+Twisted
+Unix commands
+videogames
+VIM
+weekend-retreat
+WHAT
+work
+working on 
