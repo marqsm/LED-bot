@@ -2,8 +2,11 @@ hs-screen
 =========
 
 Currently pipeline is working, supports to commands.
-```led-bot show-image <imagename>``` - image needs to be on the same server & directory where bot is running.
-```led-bot show-text <text>``` - text currently only 1 word.
+
+| command                              | parameters         | 
+| ------------------------------------ | ------------------ |
+| ```led-bot show-image <imagename>``` | image needs to be on the same server & directory where bot is running.  |
+| ```led-bot show-text <text>```       | text supports currently only 1 word.  |
 
 TODO:
 - Fix to support longer texts for "show-text"
@@ -13,13 +16,13 @@ TODO:
 - Add possibility to move an image across the screen (like immobile pacman) - of course way cooler with animated gifs
 
 
-DONE:
-x Hardware soldering
-x Figure out software dependencies on beagleBone for OpenPixel
-x Learn OpenPixel file format
-x Build Zulip bot
-x Get communication from server to hardware
-x Figure out conversion from raw data to OpenPixel format
+DONE:  
+x Hardware soldering  
+x Figure out software dependencies on beagleBone for OpenPixel  
+x Learn OpenPixel file format  
+x Build Zulip bot  
+x Get communication from server to hardware  
+x Figure out conversion from raw data to OpenPixel format  
 
 Goal:
 
