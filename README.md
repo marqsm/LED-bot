@@ -1,6 +1,8 @@
 hs-screen
 =========
 
+![marquee](./marquee1.gif)
+
 Currently pipeline is working, supports to commands.
 
 | command                              | parameters         | 
@@ -27,4 +29,6 @@ x Figure out conversion from raw data to OpenPixel format
 Goal:
 
 (done) 1. Reference app running from network to HW
+
+Created at [Hacker School](https://hackerschool.com), Summer 2014
 

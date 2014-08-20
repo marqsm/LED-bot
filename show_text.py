@@ -10,7 +10,7 @@ from marquee import Marquee_Text,Marquee_Data_Helpers
 from PIL import Image,ImageFont,ImageDraw
 
 
-target_address = '192.168.7.2:7890'
+target_address = '10.0.5.184:7890'
 client = opc.Client(target_address)
 marq = Marquee_Text();
 data_helper = Marquee_Data_Helpers()
@@ -20,7 +20,7 @@ if client.can_connect():
 else:
 	print 'Could not connect to %s' % (target_address)
 
-marq.make_message(["Never Graduate",data_helper.get_time(),"I'm a teapot","does this really work?","Maybe this message will display properly!"])
+marq.make_message(["华文黑体 华文黑体","Hacker School","Never Graduate"])
 
 xOffset = 0
 while 1:
