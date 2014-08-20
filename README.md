@@ -13,13 +13,15 @@ Currently pipeline is working, supports to commands.
 TODO:
 - Fix to support longer texts for "show-text"
 - add support to animated gifs
-- Add fetching of remote images, if imagename is an URL
 - Add commands for sampling / scrolling images, if they are too big for the screen
 - Add possibility to move an image across the screen (like immobile pacman) - of course way cooler with animated gifs
-
+- Errorhandling for image loading - now pretty weak 
+- Make a message queue for incoming messages
+- Make some kind of scheduler to decide how long to show messages
 
 DONE:  
 x Hardware soldering  
+x fetch remote images (url)
 x Figure out software dependencies on beagleBone for OpenPixel  
 x Learn OpenPixel file format  
 x Build Zulip bot  
