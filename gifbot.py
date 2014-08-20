@@ -6,6 +6,8 @@ import zulip
 import re
 from marquee import Marquee_Text, Marquee_Data_Helpers
 from PIL import Image
+import urllib2 as urllib
+from cStringIO import StringIO
 # import requests
 # import os
 
@@ -36,16 +38,35 @@ class LedScreen:
         if self.opcClient.can_connect():
             print('connected to %s' % self.ADDRESS)
 
-    def loadImage(self, filename):
-        print('loadImage %s' % filename)
+    def loadImage(self, url):
+        print('loadImage %s' % url)
+        image_load_ok = None
         try:
-            self.image = Image.open(filename)
+            print('open url ' + url)
+            img_file = urllib.urlopen(url)
+            print('read file')
+            im = StringIO(img_file.read())
+            print 'open'
+            self.image = Image.open(im)
+            print 'load'
+            self.image.load()
+            print 'verify'
+            # self.image.verify()
+            print 'ok'
+            image_load_ok = True
+            # self.image = Image.open(filename)
+            #file = cStringIO.StringIO(urllib.urlopen(URL).read())
+            #self.image = Image.open(file)
+            self.imageWidth, self.imageHeight = self.image.size
+            print 'convert'
+            self.image = self.image.convert('RGBA')
+            print("Image loaded: ")
+            print(self.image.format, self.image.size, self.image.mode, self.image.info)
         except:
+            image_load_ok = False
             print("unable to load image")
 
-        self.imageWidth, self.imageHeight = self.image.size
-        print("image loaded: ")
-        print(self.image.format, self.image.size, self.image.mode)
+        return image_load_ok
 
     def showImage(self):
         # Test if it can connect
@@ -54,7 +75,9 @@ class LedScreen:
         for i in xrange(0, self.matrix_size):
             x = i % 64
             y = int(i / 64)
+            a = None
             if (x < self.imageWidth) and (y < self.imageHeight):
+
                 r, g, b, a = self.image.getpixel((x, y))
                 if a == 0:
                     r, g, b = 0, 0, 0
@@ -66,12 +89,20 @@ class LedScreen:
         self.opcClient.put_pixels(my_pixels, channel=0)
 
     def cmdShowImage(self, userParams):
-        self.loadImage(userParams[0])
-        self.showImage()
+        if self.loadImage(userParams[0]):
+            self.showImage()
+        else:
+            print "Image load failed."
+            return False
+            # TODO - add notification to the message that gets se
 
+    # Show text in
     def cmdShowText(self, text):
         # text-parameter currently ignored
         print "cmdShowText %s" % (text)
+
+        # Very stupid decoding of UTF-8 to default string format (ASCII?)
+        # A hack to fix the message passing to marquee. There's probably a better way, like fixing this in marquee or something..
 
         _text = []
         for word in text:
@@ -102,7 +133,7 @@ class LedScreen:
         }
 
         if command in commands:
-            commands.get(command)(params)
+            return commands.get(command)(params)
         else:
             print("Command '%s' not found - params: %s " % (command, params))
 
@@ -155,7 +186,7 @@ def respond(msg):
 
         screen = LedScreen(LED_SCREEN_ADDRESS)
         command, params = getCommandAndParams(msg['content'])
-        screen.runCommand(command, params)
+        command_successful = screen.runCommand(command, params)
 
         # puts messages sent by bot to stack to enable undo functionality
         # TODO: Push undo-message to queue.
