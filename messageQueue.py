@@ -7,7 +7,7 @@ class MessageQueue:
         return self.items == []
 
     def enqueue(self, item):
-        self.items.push(item)
+        self.items.append(item)
 
     def dequeue(self):
         return self.items.pop()

@@ -39,10 +39,11 @@ class LedScreen:
             print('connected to %s' % self.ADDRESS)
 
     def loadImage(self, url):
+
         print('loadImage %s' % url)
         image_load_ok = None
         try:
-            print('open url ' + url)
+            print('opening url ' + url)
             img_file = urllib.urlopen(url)
             print('read file')
             im = StringIO(img_file.read())
