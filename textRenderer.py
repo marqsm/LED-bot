@@ -4,7 +4,7 @@ from PIL import Image, ImageFont, ImageDraw
 
 class TextRenderer:
 
-    def __init__(self, height=16, width=64, font="/Library/Fonts/Verdana.ttf",
+    def __init__(self, height=16, width=64, font="./NotoSansCJK-Bold.otf",
                  font_color=(0, 120, 0), color_bg=False):
         self.image = None
 
@@ -25,7 +25,7 @@ class TextRenderer:
         self.frame_count = 100
 
         # new image and font
-        self.font = ImageFont.truetype("/Library/Fonts/Verdana.ttf", 18)
+        self.font = ImageFont.truetype(font, 24)
         self.im = Image.new("RGB", (self.screen_width, self.screen_height), "black")
         self.draw = ImageDraw.Draw(self.im)
         return None
