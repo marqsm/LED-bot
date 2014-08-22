@@ -10,6 +10,7 @@ Currently pipeline is working, supports to commands.
 | ```led-bot show-image <imagename>``` | image needs to be on the same server & directory where bot is running.  |
 | ```led-bot show-text <text>```       | text supports currently only 1 word.  |
 
+
 TODO:
 - Fix to support longer texts for "show-text"
 - add support to animated gifs
@@ -31,6 +32,11 @@ x Figure out conversion from raw data to OpenPixel format
 Goal:
 
 (done) 1. Reference app running from network to HW
+
+APPLICATION DESIGN
+
+![arch](./architecture.png)
+
 
 Created at [Hacker School](https://hackerschool.com), Summer 2014
 
