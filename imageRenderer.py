@@ -3,7 +3,8 @@ class ImageRenderer:
 
     def __init__(self, screenSize):
         self.image = None
-        self.width, self.height = screenSize
+        self.screen_width, self.screen_height = screenSize
+        self.screen_ratio = screen_width / self.screen_height 
 
     def render(msg):
         # Should return the object we're going to queue
@@ -25,6 +26,15 @@ class ImageRenderer:
             return False
 
         return rgb_image
+
+    def resize_image(self,img_width,img_height):
+        # returns new image h/w to fit screen
+        img_ratio = img_width / img_height
+        if self.screen_ratio > img_ratio:
+            return (img_width * self.screen_height / img_height , screen_height)
+        else:
+            return (self.screen_width, img_height * self.screen_width / img_width)
+
 
     def fetch_image(self, url):
         image = None

@@ -1,7 +1,7 @@
 hs-screen
 =========
 
-![marquee](./marquee1.gif)
+![marquee](./test/marquee1.gif)
 
 Currently pipeline is working, supports to commands.
 
