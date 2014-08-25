@@ -54,7 +54,6 @@ def show_message():
 
 
 def handle_message(msg):
-
     if zulipRequestHandler.isBotMessage(msg):
         queue_token = zulipRequestHandler.get_msg_queue_token(msg)
         messageQueue.enqueue(queue_token)
