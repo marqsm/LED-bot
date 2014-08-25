@@ -7,7 +7,8 @@ class ImageRenderer:
 
     def __init__(self, screenSize):
         self.image = None
-        self.width, self.height = screenSize
+        self.screen_width, self.screen_height = screenSize
+        self.screen_ratio = screen_width / self.screen_height 
 
     def convert_image(self, image):
         # TODO: converion
@@ -19,6 +20,24 @@ class ImageRenderer:
             return False
 
         return rgb_image
+
+    def resize_image(self,img_width,img_height):
+        # returns new image h/w to fit screen
+        img_ratio = img_width / img_height
+        if self.screen_ratio > img_ratio:
+            return (img_width * self.screen_height / img_height , screen_height)
+        else:
+            return (self.screen_width, img_height * self.screen_width / img_width)
+
+    def get_frames(self):
+        # cycle through and return rendered frames, handles animated images
+        frames = []
+        while 1:
+            try:
+                self.image.seek(self.image.tell()+1)
+                frame.append(self.image.convert("RGB"))
+            except EOFError:
+                return frames
 
     def fetch_image(self, url):
         print('loadImage %s' % url)

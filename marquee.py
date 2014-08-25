@@ -9,7 +9,7 @@ from PIL import Image,ImageFont,ImageDraw
 
 class Marquee_Text(object):
 	"""Make text appear on the LED Matrix"""
-	def __init__(self,height=16,width=64,font="/Library/Fonts/Verdana.ttf",font_color=(0,120,0),color_bg=False):
+	def __init__(self,height=32,width=64,font="/Library/Fonts/Verdana.ttf",font_color=(0,120,0),color_bg=False):
 
 		# params
 		self.screen_height = height
@@ -26,8 +26,8 @@ class Marquee_Text(object):
 		self.single_msg_width = 0
 
 		# new image and font
-		self.font = ImageFont.truetype("/Library/Fonts/Verdana.ttf",18)
-		self.im = Image.new("RGB",(self.screen_width,self.screen_height),"black")
+		self.font = ImageFont.truetype("./NotoSansCJK-Bold.otf",30)
+		self.im = Image.new("RGB",(self.screen_width,self.screen_height),(120,0,0))
 		self.draw = draw = ImageDraw.Draw(self.im)
 
 	

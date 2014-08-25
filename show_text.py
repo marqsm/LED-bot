@@ -20,7 +20,7 @@ if client.can_connect():
 else:
 	print 'Could not connect to %s' % (target_address)
 
-marq.make_message(["华文黑体 华文黑体","Hacker School","Never Graduate"])
+marq.make_message(["Never Graduate","Никогда Высшее!","決して卒業！","永远不要毕业!","永遠不要畢業!","Nunca Graduarse!","결코 대학원!","Jamais Diplômé!"])
 
 xOffset = 0
 while 1:
@@ -35,5 +35,5 @@ while 1:
 	marq.draw_text(xOffset)
 
 	client.put_pixels(marq.slice_pixels(), channel=0)
-	time.sleep(0.02)
+	time.sleep(0.04)
 
