@@ -29,8 +29,10 @@ class ZulipRequestHandler:
                 return None
                 # Do we need to do something here?
             elif msgToken["type"] == "text":
+                print "getMsgQueueToken text"
                 queue_token = self.text_renderer.get_queue_token(msgToken)
             elif msgToken["type"] == "image":
+                print "getMsgQueueToken text"
                 queue_token = self.image_renderer.get_queue_token(msgToken)
 
             # if queue item valid, send response to user
@@ -112,8 +114,8 @@ class ZulipRequestHandler:
 
     # Checks if message is meant for the bot
     def isBotMessage(self, msg):
-        if (self.msg["sender_email"] != self.USERNAME
-                and (re.match(self.BOT_MSG_PREFIX, self.msg["content"],
+        if (msg["sender_email"] != self.USERNAME
+                and (re.match(self.BOT_MSG_PREFIX, msg["content"],
                               flags=re.I or re.X))):
             return True
         return False

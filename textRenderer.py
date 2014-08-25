@@ -55,23 +55,26 @@ class TextRenderer:
         self.single_msg_width = int(self.msg_width / 2)
         self.total_width = self.msg_width + self.screen_width
 
-    def draw_text(self, offset):
+    def draw_text(self):
         self.im.paste((0, 0, 0), (0, 0, self.screen_width, self.screen_height))
-        self.draw.text((self.screen_width - offset, 0), self.text_to_send,
+        print self.text_to_send
+        self.draw.text((0, 0), self.text_to_send,
                        font=self.font, fill=self.font_color)
 
     def render(self, msgText):
         _text = []
-        print("TextRenderer.render", msgText);
+        print("TextRenderer.render", msgText)
         for word in msgText:
             if isinstance(word, unicode):
                 word = str(word)
             _text.append(word)
-        self.make_message(_text)
+        self.text_to_send = ' '.join(_text)
+        # self.make_message(_text)
+        self.draw_text()
 
         # Should return the object we're going to queue
         # {
-        #    iamge: pillowImage,
+        #    image: pillowImage,
         #    action: "scroll",
         #    amount_of_frames: x
         # }
@@ -84,8 +87,8 @@ class TextRenderer:
     def get_queue_token(self, msgToken):
         queue_token = {}
         # TODO: add possible params
-        image = self.render(msgToken["text"])
-        queue_token["image"] = image
+        self.render(msgToken["text"])
+        queue_token["image"] = self.im
         queue_token["frame_count"] = self.getFrameCount()
         queue_token["action"] = "scroll"
         queue_token["valid"] = True

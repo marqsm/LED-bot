@@ -1,3 +1,7 @@
+import urllib
+import StringIO
+from PIL import Image
+
 
 class ImageRenderer:
 
@@ -5,31 +9,33 @@ class ImageRenderer:
         self.image = None
         self.width, self.height = screenSize
 
-    def render(msg):
-        # Should return the object we're going to queue
-        # {
-        #    iamge: pillowImage,
-        #    action: "scroll",
-        #    amount_of_frames: x
-        # }
-        #
-        return None
-
     def convert_image(self, image):
         # TODO: converion
         # TODO: error, if conversion fails
         try:
-            rgb_image = image.convert("RGB")
+            rgb_image = image.convert("RGBA")
         except:
-            "unable to convert image to RGB format"
+            "unable to convert image to RGBA format"
             return False
 
         return rgb_image
 
     def fetch_image(self, url):
-        image = None
+        print('loadImage %s' % url)
+        image_load_ok = None
+        try:
+            img_file = urllib.urlopen(url)
+            im = StringIO(img_file.read())
+            self.image = Image.open(im)
+            self.image.load()
+            print 'verify'
+            # self.image.verify()
+            # image_load_ok = True
+        except:
+            print("Print fetching the image failed")
+        # image = None
         # TODO : fetch remote image
-        return image
+        return self.image
 
     def get_queue_token(self, msgToken):
         queue_token = {}
