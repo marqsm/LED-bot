@@ -11,8 +11,7 @@ class ZulipRequestHandler:
         self.BOT_MSG_PREFIX = '^(\\@\\*\\*)*led-bot(\\*\\*)*'
         self.zulipClient = zulipClient
         self.screen_width, self.screen_height = self.SCREEN_SIZE
-        self.text_renderer = TextRenderer.TextRenderer(width=self.screen_width,
-                                                       height=self.screen_width)
+        self.text_renderer = TextRenderer.TextRenderer()
         self.image_renderer = ImageRenderer.ImageRenderer(self.SCREEN_SIZE)
         return None
 

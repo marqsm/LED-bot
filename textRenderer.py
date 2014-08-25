@@ -18,17 +18,17 @@ class TextRenderer:
         return None
 
     def getFrameCount(self):
-        return self.frame_count
+        return 1
 
     def rainbow_bg(c):
         # hue, lightness, saturation to rgb
         vals = colorsys.hls_to_rgb(round(c / 360.0, 2), 0.05, 1)
         return (int(vals[0] * 255), int(vals[1] * 255), int(vals[2] * 255))
 
-       def draw_text(self):
+    def draw_text(self):
         size = self.font.getsize(self.text_to_send)
 
-        self.im = Image.new("RGB", size, "black")
+        self.im = Image.new("RGBA", size, "black")
         self.draw = ImageDraw.Draw(self.im)
 
         self.draw.text((0, 0), self.text_to_send,
@@ -53,7 +53,7 @@ class TextRenderer:
         queue_token = {}
         # TODO: add possible params
         self.render(msgToken["text"])
-        queue_token["image"] = self.im
+        queue_token["image"] = [self.im]
         queue_token["frame_count"] = self.getFrameCount()
         queue_token["action"] = "scroll"
         queue_token["valid"] = True
