@@ -36,13 +36,12 @@ class ImageRenderer:
             return (self.screen_width, img_height * self.screen_width / img_width)
 
     def get_frames(self):
-        # need to flush this out a bit more but it works
-        # if a GIF cycle through and return rendered frames
+        # cycle through and return rendered frames, handles animated images
         frames = []
         while 1:
             try:
-                image.seek(image.tell()+1)
-                frame.append(image.convert("RGB"))
+                self.image.seek(self.image.tell()+1)
+                frame.append(self.image.convert("RGB"))
             except EOFError:
                 return frames
 
