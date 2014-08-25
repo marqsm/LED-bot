@@ -2,6 +2,7 @@ import messageQueue as MessageQueue
 import zulipRequestHandler as ZulipRequestHandler
 import zulip
 import opc
+import time
 
 # LED Screen
 MAX_FRAME_COUNT = 100
@@ -9,7 +10,7 @@ SCREEN_SIZE = (64, 32)
 MATRIX_WIDTH, MATRIX_HEIGHT = SCREEN_SIZE
 MATRIX_SIZE = MATRIX_WIDTH * MATRIX_HEIGHT
 LED_SCREEN_ADDRESS = '10.0.5.184:7890'
-messageXOffset = 0
+messagex_offset = 0
 currentFrameCount = 0
 
 # Zulip Conf
@@ -54,20 +55,21 @@ def subscribe_to_threads(zulipClient):
 
 
 # Puts the image on the screen
-# TODO: reading position from image xOffset, yOffset
-def showImage(image, imageWidth, imageHeight, xOffset=0, yOffset=0):
+# TODO: reading position from image x_offset, y_offset
+def showImage(image, x_offset=0, y_offset=0):
     # Test if it can connect
+    print("Image size", image.size)
     my_pixels = []
+    image_width, image_height = image.size
 
     for i in xrange(0, MATRIX_SIZE):
-        x = i % MATRIX_WIDTH
-        y = int(i / MATRIX_WIDTH)
-        a = None
-        if (x < imageWidth) and (y < imageHeight):
-
-            r, g, b = image.getpixel((x, y))
-            #if a == 0:
-            #    r, g, b = 0, 0, 0
+        x = i % MATRIX_WIDTH + x_offset
+        y = int(i / MATRIX_WIDTH) + y_offset
+        #a = None
+        if (x > 0) and (x < image_width) and (y > 0) and (y < image_height):
+            r, g, b, a = image.getpixel((x, y))
+            if a == 0:
+                r, g, b = 0, 0, 0
             my_pixels.append((b, g, r))
         else:
             my_pixels.append((0, 0, 0))
@@ -87,6 +89,18 @@ def show_message():
     return False
 
 
+# Scroll image for frame_count
+def scroll_message(image, frame_count):
+    max_x_offset = image[0].size[0] + 1
+    frame = 0
+
+    for i in xrange(max_x_offset + MATRIX_WIDTH):
+        print("Showing image at offset %s frame %s / %s" % (i, frame, frame_count))
+        time.sleep(1.0 / 60)
+        showImage(image[frame], x_offset=i - MATRIX_WIDTH)
+        frame = (frame + 1) % frame_count
+
+
 def handle_message(msg):
     if zulipRequestHandler.isBotMessage(msg):
         queue_token = zulipRequestHandler.get_msg_queue_token(msg)
@@ -98,8 +112,8 @@ def handle_message(msg):
         nextMsg = messageQueue.dequeue()
         print 'Dequed token ------------------------'
         print nextMsg
-        imageWidth, imageHeight = nextMsg["image"].size
-        showImage(nextMsg["image"], imageWidth, imageHeight)
+        scroll_message(nextMsg["image"], nextMsg["frame_count"])
+
         # TODO: Show it on the screen
 
     # This will have to do ALL actions for the main loop.

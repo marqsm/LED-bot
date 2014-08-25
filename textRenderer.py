@@ -26,8 +26,6 @@ class TextRenderer:
 
         # new image and font
         self.font = ImageFont.truetype(font, 24)
-        self.im = Image.new("RGB", (self.screen_width, self.screen_height), "black")
-        self.draw = ImageDraw.Draw(self.im)
         return None
 
     def getFrameCount(self):
@@ -48,16 +46,13 @@ class TextRenderer:
         else:
             return "Nice try, you sent an empty string.   Nice try, you sent an empty string.   "
 
-    def make_message(self, my_list):
-        self.text_to_send = self.text_format(unicode(self.text_from_list(my_list), 'UTF-8'))
-        self.msg_width, self.msg_height = self.font.getsize(self.text_to_send)
-
-        self.single_msg_width = int(self.msg_width / 2)
-        self.total_width = self.msg_width + self.screen_width
-
     def draw_text(self):
-        self.im.paste((0, 0, 0), (0, 0, self.screen_width, self.screen_height))
-        print self.text_to_send
+        # self.im.paste((0, 0, 0), (0, 0, self.screen_width, self.screen_height))
+        size = self.font.getsize(self.text_to_send)
+
+        self.im = Image.new("RGB", size, "black")
+        self.draw = ImageDraw.Draw(self.im)
+
         self.draw.text((0, 0), self.text_to_send,
                        font=self.font, fill=self.font_color)
 
@@ -68,17 +63,9 @@ class TextRenderer:
             if isinstance(word, unicode):
                 word = str(word)
             _text.append(word)
-        self.text_to_send = ' '.join(_text)
-        # self.make_message(_text)
+        self.text_to_send = ' '.join(_text)        # self.make_message(_text)
         self.draw_text()
 
-        # Should return the object we're going to queue
-        # {
-        #    image: pillowImage,
-        #    action: "scroll",
-        #    amount_of_frames: x
-        # }
-        #
         return None
 
     def getImage(self):

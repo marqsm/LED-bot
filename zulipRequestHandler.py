@@ -22,6 +22,7 @@ class ZulipRequestHandler:
 
         # Do stuff
         if self.isBotMessage(msg):
+            print("is Bot message")
             msgToken = self.tokenizeMessage(msg)
             if msgToken["type"] == "error":
                 user_response = self.getResponse(msg, "syntaxError")
@@ -32,8 +33,10 @@ class ZulipRequestHandler:
                 print "getMsgQueueToken text"
                 queue_token = self.text_renderer.get_queue_token(msgToken)
             elif msgToken["type"] == "image":
-                print "getMsgQueueToken text"
+                print "getMsgQueueToken image"
                 queue_token = self.image_renderer.get_queue_token(msgToken)
+                print("This is what I got from ImageRenderer")
+                print(queue_token)
 
             # if queue item valid, send response to user
             if queue_token["valid"]:
@@ -60,7 +63,7 @@ class ZulipRequestHandler:
         if arr[0] == "show-image":
             token["type"] = "image"
             token["url"] = arr[1]
-        if arr[0] == "show-text":
+        elif arr[0] == "show-text":
             token["type"] = "text"
             token["text"] = arr[1:]
         else:
@@ -91,7 +94,7 @@ class ZulipRequestHandler:
             msgText = """JUST GIVE ME A SEC I'LL SHOW YOUR STUFF WHEN I CAN!
                          WE'RE ALL UNDER A LOT OF PRESSURE HERE!!!"""
         elif status == "syntaxError":
-            msgText == """I don't know what that is.. you could try sending me
+            msgText = """I don't know what that is.. you could try sending me
                           led-bot show-image http://www.example.com/cat.gif
                           led-bot show-text whatever you want to say"""
         elif status == "imageLoadError":
