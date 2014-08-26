@@ -11,7 +11,6 @@ class TextRenderer:
         # params
         self.color_bg = color_bg
         self.font_color = font_color
-        self.text_to_send = " "
 
         # new image and font
         self.font = ImageFont.truetype(font, 24)
@@ -25,14 +24,16 @@ class TextRenderer:
         vals = colorsys.hls_to_rgb(round(c / 360.0, 2), 0.05, 1)
         return (int(vals[0] * 255), int(vals[1] * 255), int(vals[2] * 255))
 
-    def draw_text(self):
-        size = self.font.getsize(self.text_to_send)
+    def draw_text(self, text_to_send):
+        x, y = self.font.getsize(text_to_send)
 
-        self.im = Image.new("RGBA", size, "black")
+        self.im = Image.new("RGBA", (x, y+10), "black")
+        # Add padding below, because PIL sucks!
         self.draw = ImageDraw.Draw(self.im)
 
-        self.draw.text((0, 0), self.text_to_send,
-                       font=self.font, fill=self.font_color)
+        self.draw.text(
+            (0, 0), text_to_send, font=self.font, fill=self.font_color
+        )
 
     def render(self, msgText):
         _text = []
@@ -41,8 +42,7 @@ class TextRenderer:
             if isinstance(word, unicode):
                 word = str(word)
             _text.append(word)
-        self.text_to_send = ' '.join(_text)
-        self.draw_text()
+        self.draw_text(' '.join(_text))
 
         return None
 

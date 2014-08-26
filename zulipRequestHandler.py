@@ -17,7 +17,6 @@ class ZulipRequestHandler:
 
     # Main function, this is what gets passed to the actual Zulip Client
     def get_msg_queue_token(self, msg):
-        self.msg = msg
 
         # Do stuff
         if self.isBotMessage(msg):
