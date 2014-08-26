@@ -13,7 +13,7 @@ class TextRenderer:
         self.font_color = font_color
 
         # new image and font
-        self.font = ImageFont.truetype(font, 24)
+        self.font = ImageFont.truetype(font, 30)
         return None
 
     def getFrameCount(self):
@@ -36,15 +36,7 @@ class TextRenderer:
         )
 
     def render(self, msgText):
-        _text = []
-        print("TextRenderer.render", msgText)
-        for word in msgText:
-            if isinstance(word, unicode):
-                word = str(word)
-            _text.append(word)
-        self.draw_text(' '.join(_text))
-
-        return None
+        self.draw_text(' '.join(msgText))
 
     def getImage(self):
         return self.image
