@@ -8,7 +8,6 @@ import imageRenderer as ImageRenderer
 import messageQueue as MessageQueue
 import opc
 import textRenderer as TextRenderer
-from zulipRequestHandler import ZulipRequestHandler
 
 # LED Screen physical dimensions
 MAX_FRAME_COUNT = 100
@@ -245,10 +244,12 @@ class LEDBot(object):
 
 
 if __name__ == '__main__':
-    # Zulip python client by the good zulip-people.
-    # Handles the polling (gets a callback) which is blocking
-    # Also message sending etc
+    from zulipRequestHandler import ZulipRequestHandler
     zulipRequestHandler = ZulipRequestHandler(ZULIP_USERNAME, API_KEY)
-
     led_bot = LEDBot(listeners=[zulipRequestHandler])
+
+    # Uncomment the lines below to be able to test the bot from the CLI.
+    # from cli_handler import CLIHandler
+    # led_bot = LEDBot(listeners=[CLIHandler(), zulipRequestHandler])
+
     led_bot.run()

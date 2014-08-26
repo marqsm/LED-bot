@@ -36,7 +36,9 @@ class TextRenderer:
     def get_queue_token(self, msgToken):
         queue_token = {}
         # TODO: add possible params
-        queue_token["image"] = [self.draw_text(' '.join(msgToken["text"], msgToken["color"], msgToken["background-color"]))]
+        # FIXME: msgToken["color"], msgToken["background-color"] ??
+        queue_token["image"] = [self.draw_text(' '.join(msgToken["text"]))]
+
         queue_token["frame_count"] = 1
         queue_token["action"] = "scroll"
         queue_token["valid"] = True
