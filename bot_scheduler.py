@@ -1,11 +1,11 @@
 # Standard library
 import re
+from Queue import Queue
 from threading import Thread, Lock
 import time
 
 # Local library
 import imageRenderer as ImageRenderer
-import messageQueue as MessageQueue
 import opc
 import textRenderer as TextRenderer
 
@@ -28,8 +28,8 @@ with open('API_KEY', 'r') as api_file:
 # Components
 ###########################
 
-# messageQueue is where incoming messages are stored and fetched from
-messageQueue = MessageQueue.MessageQueue()
+# message_queue is where incoming messages are stored and fetched from
+message_queue = Queue()
 
 class LEDBot(object):
 
@@ -58,7 +58,7 @@ class LEDBot(object):
         """ Run the main loop of the bot. """
 
         # running / blocking task
-        # gets messages from messageQueue
+        # gets messages from message_queue
         print('Trying to connect to LED-display...')
         if self.opcClient.can_connect():
             print('connected to %s' % LED_SCREEN_ADDRESS)
@@ -75,7 +75,7 @@ class LEDBot(object):
     def handle_message(self, msg, listener):
         token = self._process_message(msg)
         if token is not None:
-            messageQueue.enqueue(token)
+            message_queue.put(token)
         self._send_response(token, msg, listener)
 
     def scroll_message(self, image):
@@ -232,8 +232,8 @@ class LEDBot(object):
 
         """
 
-        if not messageQueue.isEmpty():
-            nextMsg = messageQueue.dequeue()
+        if not message_queue.empty():
+            nextMsg = message_queue.get(block=False)
 
             # Display of message needs to happen in its own thread
             # to avoid blocking the message read process. If not done,
