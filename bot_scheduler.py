@@ -30,13 +30,6 @@ zulipRequestHandler = ZulipRequestHandler.ZulipRequestHandler(zulipClient,
 opcClient = opc.Client(LED_SCREEN_ADDRESS)
 
 
-def init():
-    return None
-
-
-def show_frame():
-    # puts the image to the LED display
-    return None
 
 
 def subscribe_to_threads(zulipClient):
@@ -76,17 +69,6 @@ def showImage(image, x_offset=0, y_offset=0):
 
     # dump data to LED display
     opcClient.put_pixels(my_pixels, channel=0)
-
-
-def show_message():
-    # Handles the display of the whole message
-    # This includes timing, scrolling, managing offsets
-
-    # call render_text
-    # call render_image
-
-    # uses self.show_frame
-    return False
 
 
 # Scroll image for frame_count
