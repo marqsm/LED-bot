@@ -1,7 +1,9 @@
-hs-screen
+LED Bot
 =========
 
 ![marquee](./test/marquee1.gif)
+
+A LED application server. Stream images, messages and more to LEDs in your home, office, hacker space.
 
 Currently pipeline is working, supports to commands.
 
