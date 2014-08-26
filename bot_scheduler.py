@@ -16,7 +16,7 @@ currentFrameCount = 0
 # Zulip Conf
 ZULIP_USERNAME = "led-bot@students.hackerschool.com"
 api_file = open('API_KEY', 'r')
-API_KEY = 
+API_KEY = api_file.read()
 
 # Components
 messageQueue = MessageQueue.MessageQueue()
