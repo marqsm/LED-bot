@@ -26,14 +26,14 @@ class Marquee_Text(object):
 		self.single_msg_width = 0
 
 		# new image and font
-		self.font = ImageFont.truetype("./NotoSansCJK-Bold.otf",30)
+		self.font = ImageFont.truetype("./NotoSansCJK-Bold.otf",22)
 		self.im = Image.new("RGB",(self.screen_width,self.screen_height),(120,0,0))
 		self.draw = draw = ImageDraw.Draw(self.im)
 
-	
+
 
 	def rainbow_bg(c):
-		# hue, lightness, saturation to rgb 
+		# hue, lightness, saturation to rgb
 		vals = colorsys.hls_to_rgb(round(c/360.0,2),0.05,1)
 		return (int(vals[0]*255),int(vals[1]*255),int(vals[2]*255))
 
@@ -57,7 +57,7 @@ class Marquee_Text(object):
 		self.text_to_send = self.text_format(unicode(self.text_from_list(my_list),'UTF-8'))
 		self.msg_width, self.msg_height = self.font.getsize(self.text_to_send)
 
-		self.single_msg_width = int(self.msg_width / 2) 
+		self.single_msg_width = int(self.msg_width / 2)
 		self.total_width = self.msg_width + self.screen_width
 
 	def draw_text(self,offset):
@@ -85,8 +85,8 @@ class Marquee_Data_Helpers(object):
 		return time.strftime("%d %b %H:%M %p", time.localtime())
 
 	def get_quote(self):
-		return "Never trust a computer you can't throw out a window. - Steve Wozniak" 
+		return "Never trust a computer you can't throw out a window. - Steve Wozniak"
 
 	def get_train_schedule(self):
-		return "Train Schedule" 	
+		return "Train Schedule"
 
