@@ -9,10 +9,13 @@ class TextRenderer:
         # params
         self.color_bg = color_bg
         self.font_color = font_color
+        self.MAX_TEXT_LENGTH = 1000
+        
         # new image and font
         self.font = ImageFont.truetype(font, 22)
-
+        
     def draw_text(self, text_to_send):
+        text_to_send = self.truncate_text(text_to_send)
         x, y = self.font.getsize(text_to_send)
 
         # Add padding below, because PIL sucks!
@@ -33,3 +36,6 @@ class TextRenderer:
         queue_token["valid"] = True
 
         return queue_token
+    
+    def truncate_text(self, text_to_send):
+        return text_to_send[:self.MAX_TEXT_LENGTH]
