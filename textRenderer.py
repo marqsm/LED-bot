@@ -10,7 +10,7 @@ class TextRenderer:
         self.color_bg = color_bg
         self.font_color = font_color
         # new image and font
-        self.font = ImageFont.truetype(font, 30)
+        self.font = ImageFont.truetype(font, 22)
 
     def draw_text(self, text_to_send):
         x, y = self.font.getsize(text_to_send)
