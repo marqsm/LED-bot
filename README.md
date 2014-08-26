@@ -42,11 +42,14 @@ Goal:
 
 APPLICATION DESIGN / DEV GUIDE
 
-* bot_scheduler.py - The main, handles displaying and scrolling text on the screen 
-
-* textRenderer.py /  imageRenderer.py - Where the images for text and images get created. Things like text colors and style, image pre-processing go here 
-* MessageQueue - Our queue
-* opc.py - OPC protocol handling
+| file                  | purpose         	| 
+| --------------------- | ------------------|
+| bot_scheduler.py		| The main, handles displaying and scrolling text on the screen 					|
+| textRenderer.py		| Where the image for text gets created. Things like text colors and style, image pre-processing go here 		|
+| imageRenderer.py  	| Where the images get processed				|
+| MessageQueue.py  		| Message queue 								|
+| opc.py 				| Open Pixel Control handler 					|
+| zulipRequestHandler.py| handle Zulip tasks							|
 
 
 ![arch](./architecture.png)
