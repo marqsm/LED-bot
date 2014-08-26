@@ -2,10 +2,6 @@
 import re
 from threading import Thread, Lock
 import time
-import requests
-
-# Third party library
-import zulip
 
 # Local library
 import imageRenderer as ImageRenderer
@@ -23,11 +19,11 @@ MATRIX_SIZE = MATRIX_WIDTH * MATRIX_HEIGHT
 # Where to find the LED screen.
 LED_SCREEN_ADDRESS = 'ledbone.local:7890'
 
-# Zulip Conf. Zulip API_KEY is loaded from a file calleed API_KEY
-# which is expected to be at the application root.
+# Zulip Conf.
 ZULIP_USERNAME = "led-bot@students.hackerschool.com"
-api_file = open('API_KEY', 'r')
-API_KEY = api_file.read()
+# Zulip API_KEY is loaded from a file called API_KEY at the app root.
+with open('API_KEY', 'r') as api_file:
+    API_KEY = api_file.read().strip()
 
 ###########################
 # Components
@@ -38,12 +34,12 @@ messageQueue = MessageQueue.MessageQueue()
 
 class LEDBot(object):
 
-    def __init__(self, client):
+    def __init__(self, listeners=None):
 
-        self.client = client
+        self.listeners = listeners if listeners is not None else []
 
         # If string starts with "@led-bot" or "led-bot"
-        self.USERNAME = ZULIP_USERNAME
+        # fixme: duplicated
         self.BOT_MSG_PREFIX = '^(\\@\\*\\*)*led-bot(\\*\\*)*'
 
         # Screen information
@@ -68,33 +64,20 @@ class LEDBot(object):
         if self.opcClient.can_connect():
             print('connected to %s' % LED_SCREEN_ADDRESS)
 
+        # Start up each of the listeners in a different thread
+        self._start_listeners()
+
         print("Bot running... ")
-        # Blocking call to zulip bot
-        zulipClient.call_on_each_message(self.handle_message)
+        # The main event loop, process any messages in the queue
+        while True:
+            time.sleep(0.1)
+            self._process_queue()
 
-    def handle_message(self, msg):
-        # This will have to do ALL actions for the main loop.
-        # Queue incoming messages
-        # Check queue for the next message
-        # Process that message
-        # Show it to the screen
-        #   - manage the displayed frames / scrolling etc
-        if self._is_bot_message(msg):
-            token = self._get_msg_queue_token(msg)
-            if token is not None:
-                messageQueue.enqueue(token)
-            self._send_response(token, msg)
-
-        # TODO - ADD TIMER / FRAME COUNTER
-        if not messageQueue.isEmpty():
-            nextMsg = messageQueue.dequeue()
-
-            # Display of message needs to happen in its own thread
-            # to avoid blocking the message read process. If not done,
-            # messages sent to bot during display activity would be ignored.
-            thread = Thread(target=self.scroll_message, args=(nextMsg["image"],))
-            thread.daemon = False
-            thread.start()
+    def handle_message(self, msg, listener):
+        token = self._process_message(msg)
+        if token is not None:
+            messageQueue.enqueue(token)
+        self._send_response(token, msg, listener)
 
     def scroll_message(self, image):
         """ Scroll the image through the screen. """
@@ -120,16 +103,7 @@ class LEDBot(object):
 
     #### Private protocol #####################################################
 
-    def _is_bot_message(self, msg):
-        """ Return True if the message is meant for the bot. """
-
-        return (
-            msg["sender_email"] != self.USERNAME and
-
-            re.match(self.BOT_MSG_PREFIX, msg["content"], flags=re.I or re.X)
-        )
-
-    def _get_msg_queue_token(self, msg):
+    def _process_message(self, msg):
         msgToken = self._tokenize_message(msg)
 
         if msgToken["type"] == "error":
@@ -143,7 +117,7 @@ class LEDBot(object):
 
         return queue_token
 
-    def _send_response(self, queue_token, msg):
+    def _send_response(self, queue_token, msg, listener):
         # if queue item valid, send response to user
         if queue_token is None:
             user_response = self._get_response(msg, "syntaxError")
@@ -154,7 +128,7 @@ class LEDBot(object):
         else:
             user_response = self._get_response(msg, "unknownError")
 
-        self.client.send_response(user_response)
+        listener.send_response(user_response, msg)
 
     def _tokenize_message(self, msg):
         """ Tokenizes a message. """
@@ -211,10 +185,7 @@ class LEDBot(object):
             msgText = "Yeah, this default message should never be reached.."
 
         response = {
-            "type": msg["type"],
-            "subject": msg["subject"],           # topic within the stream
-            "to": self.client.get_msg_to(msg),         # name of the stream
-            "content": "%s" % msgText        # message to print to stream
+            "content": "%s" % msgText,  # message to print to stream
         }
 
         return response
@@ -249,44 +220,35 @@ class LEDBot(object):
         # dump data to LED display
         self.opcClient.put_pixels(my_pixels, channel=0)
 
+    def _start_listeners(self):
+        for listener in self.listeners:
+            thread = Thread(target=listener.listen, args=(self.handle_message,))
+            thread.daemon = True
+            thread.start()
 
-def get_zulip_streams():
-    """ Get all the streams on Zulip, using the API.
+    def _process_queue(self):
+        """Process messages in the queue.
 
-    # Thanks Tristan!
-    """
+        Checks the queue and processes the first message on the queue.
 
-    response = requests.get(
-        'https://api.zulip.com/v1/streams',
-        auth=requests.auth.HTTPBasicAuth(ZULIP_USERNAME, API_KEY)
-    )
+        """
 
-    if response.status_code == 200:
-        return response.json()['streams']
+        if not messageQueue.isEmpty():
+            nextMsg = messageQueue.dequeue()
 
-    elif response.status_code == 401:
-        raise('check yo auth')
+            # Display of message needs to happen in its own thread
+            # to avoid blocking the message read process. If not done,
+            # messages sent to bot during display activity would be ignored.
+            thread = Thread(target=self.scroll_message, args=(nextMsg["image"],))
+            thread.daemon = False
+            thread.start()
 
-    else:
-        raise(':( we failed to GET streams.\n(%s)' % response)
-
-def subscribe_to_threads(zulipClient):
-    """ Add subscriptions to the bot inorder to receive messages. """
-
-    streams = [
-        {'name': stream['name']} for stream in get_zulip_streams()
-    ]
-    zulipClient.add_subscriptions(streams)
 
 if __name__ == '__main__':
     # Zulip python client by the good zulip-people.
     # Handles the polling (gets a callback) which is blocking
     # Also message sending etc
-    zulipClient = zulip.Client(email=ZULIP_USERNAME, api_key=API_KEY)
-    subscribe_to_threads(zulipClient)
-    zulipRequestHandler = ZulipRequestHandler(
-        zulipClient, ZULIP_USERNAME, SCREEN_SIZE
-    )
+    zulipRequestHandler = ZulipRequestHandler(ZULIP_USERNAME, API_KEY)
 
-    led_bot = LEDBot(client=zulipRequestHandler)
+    led_bot = LEDBot(listeners=[zulipRequestHandler])
     led_bot.run()
