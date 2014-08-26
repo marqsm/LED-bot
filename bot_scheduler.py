@@ -15,7 +15,7 @@ MATRIX_WIDTH, MATRIX_HEIGHT = SCREEN_SIZE
 MATRIX_SIZE = MATRIX_WIDTH * MATRIX_HEIGHT
 
 # Where to find the LED screen.
-LED_SCREEN_ADDRESS = '10.0.5.184:7890'
+LED_SCREEN_ADDRESS = 'ledbone.local:7890'
 
 # Zulip Conf. Zulip API_KEY is loaded from a file calleed API_KEY
 # which is expected to be at the application root.
