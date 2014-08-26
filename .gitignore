@@ -1,6 +1,7 @@
 # custom
 API_KEY
 conf.sh
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
