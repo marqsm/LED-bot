@@ -4,6 +4,8 @@ import zulip
 import opc
 from threading import Thread, Lock
 import time
+import requests
+import json
 
 
 # LED Screen physical dimensions
@@ -41,24 +43,28 @@ zulipRequestHandler = ZulipRequestHandler.ZulipRequestHandler(zulipClient,
 opcClient = opc.Client(LED_SCREEN_ADDRESS)
 
 _SCREEN_LOCK = Lock()
-
+ 
+# Thanks Tristan!
+# Call Zulip API to get a list of all streams.
+def get_content():
+    getter = requests.get('https://api.zulip.com/v1/streams', auth=requests.auth.HTTPBasicAuth(ZULIP_USERNAME, API_KEY))
+    if getter.status_code == 200:
+        return getter._content
+    elif getter.status_code == 401:
+        raise('check yo auth')
+    else:
+        raise(':( we failed to GET streams.\n(%s)' % getter)
 
 # The Zulip-bot needs to subscribe to threads
 # in order to receive messges
 def subscribe_to_threads(zulipClient):
-    f = open('subscriptions.txt', 'r')
-
-    ZULIP_STREAM_SUBSCRIPTIONS = []
-    try:
-        for line in f:
-            ZULIP_STREAM_SUBSCRIPTIONS.append(line.strip())
-    finally:
-        f.close()
-
+    _content = json.loads(get_content())     
+    streams = _content['streams']
+    stream_names = [stream['name'] for stream in streams]
+     
     # Add subscriptions to bot
-    streams = [{"name": str_name} for str_name in ZULIP_STREAM_SUBSCRIPTIONS]
+    streams = [{"name": str_name} for str_name in stream_names]
     zulipClient.add_subscriptions(streams)
-
 
 # Puts the image on the screen.
 # In this case image = pillow image object (might be image of text)
