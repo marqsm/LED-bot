@@ -1,4 +1,4 @@
-import messageQueue as MessageQueue
+from Queue import Queue
 import zulipRequestHandler as ZulipRequestHandler
 import zulip
 import opc
@@ -27,8 +27,8 @@ API_KEY = api_file.read()
 # Components
 ###########################
 
-# messageQueue is where incoming messages are stored and fetched from
-messageQueue = MessageQueue.MessageQueue()
+# message_queue is where incoming messages are stored and fetched from
+message_queue = Queue()
 
 # Zulip python client by the good zulip-people.
 # Handles the polling (gets a callback) which is blocking
@@ -43,7 +43,7 @@ zulipRequestHandler = ZulipRequestHandler.ZulipRequestHandler(zulipClient,
 opcClient = opc.Client(LED_SCREEN_ADDRESS)
 
 _SCREEN_LOCK = Lock()
- 
+
 # Thanks Tristan!
 # Call Zulip API to get a list of all streams.
 def get_content():
@@ -58,10 +58,10 @@ def get_content():
 # The Zulip-bot needs to subscribe to threads
 # in order to receive messges
 def subscribe_to_threads(zulipClient):
-    _content = json.loads(get_content())     
+    _content = json.loads(get_content())
     streams = _content['streams']
     stream_names = [stream['name'] for stream in streams]
-     
+
     # Add subscriptions to bot
     streams = [{"name": str_name} for str_name in stream_names]
     zulipClient.add_subscriptions(streams)
@@ -122,11 +122,11 @@ def handle_message(msg):
     #   - manage the displayed frames / scrolling etc
     if zulipRequestHandler.isBotMessage(msg):
         queue_token = zulipRequestHandler.get_msg_queue_token(msg)
-        messageQueue.enqueue(queue_token)
+        message_queue.put(queue_token)
 
     # TODO - ADD TIMER / FRAME COUNTER
-    if not messageQueue.isEmpty():
-        nextMsg = messageQueue.dequeue()
+    if not message_queue.empty():
+        nextMsg = message_queue.get(block=False)
 
         # Display of message needs to happen in its own thread
         # to avoid blocking the message read process. If not done,
@@ -138,7 +138,7 @@ def handle_message(msg):
 
 def main():
     # running / blocking task
-    # gets messages from messageQueue
+    # gets messages from message_queue
     print('Trying to connect to LED-display...')
     if opcClient.can_connect():
         print('connected to %s' % LED_SCREEN_ADDRESS)
