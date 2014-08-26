@@ -1,3 +1,7 @@
+# Basic queueu data structure.
+# Could be called just queue as has nothing related to messages.
+
+
 class MessageQueue:
 
     def __init__(self):

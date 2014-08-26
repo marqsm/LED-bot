@@ -6,35 +6,45 @@ from threading import Thread, Lock
 import time
 
 
-# LED Screen
+# LED Screen physical dimensions
 MAX_FRAME_COUNT = 100
 SCREEN_SIZE = (64, 32)
 MATRIX_WIDTH, MATRIX_HEIGHT = SCREEN_SIZE
 MATRIX_SIZE = MATRIX_WIDTH * MATRIX_HEIGHT
-LED_SCREEN_ADDRESS = '10.0.5.184:7890'
-messagex_offset = 0
-currentFrameCount = 0
 
-# Zulip Conf
+# Where to find the LED screen.
+LED_SCREEN_ADDRESS = '10.0.5.184:7890'
+
+# Zulip Conf. Zulip API_KEY is loaded from a file calleed API_KEY
+# which is expected to be at the application root.
 ZULIP_USERNAME = "led-bot@students.hackerschool.com"
 api_file = open('API_KEY', 'r')
 API_KEY = api_file.read()
 
+###########################
 # Components
+###########################
+
+# messageQueue is where incoming messages are stored and fetched from
 messageQueue = MessageQueue.MessageQueue()
 
-
+# Zulip python client by the good zulip-people.
+# Handles the polling (gets a callback) which is blocking
+# Also message sending etc
 zulipClient = zulip.Client(email=ZULIP_USERNAME,
                            api_key=API_KEY)
 zulipRequestHandler = ZulipRequestHandler.ZulipRequestHandler(zulipClient,
                                                               ZULIP_USERNAME,
                                                               SCREEN_SIZE)
+# opcClient is the Open Pixel Control client
+# which provides the drivers (using LEDscape) an API to the LED-screen
 opcClient = opc.Client(LED_SCREEN_ADDRESS)
 
 _SCREEN_LOCK = Lock()
 
 
-
+# The Zulip-bot needs to subscribe to threads
+# in order to receive messges
 def subscribe_to_threads(zulipClient):
     f = open('subscriptions.txt', 'r')
 
@@ -50,11 +60,10 @@ def subscribe_to_threads(zulipClient):
     zulipClient.add_subscriptions(streams)
 
 
-# Puts the image on the screen
-# TODO: reading position from image x_offset, y_offset
+# Puts the image on the screen.
+# In this case image = pillow image object (might be image of text)
 def showImage(image, x_offset=0, y_offset=0):
-    # Test if it can connect
-    print("Image size", image.size)
+    # print("Image size", image.size)
     my_pixels = []
     image_width, image_height = image.size
 
@@ -74,7 +83,8 @@ def showImage(image, x_offset=0, y_offset=0):
     opcClient.put_pixels(my_pixels, channel=0)
 
 
-# Scroll image for frame_count
+# Scroll image for frame_count through the screen.
+# frame-count is in almost all cases just image width + screen width.
 def scroll_message(image, frame_count):
 
     _SCREEN_LOCK.acquire()
@@ -89,7 +99,9 @@ def scroll_message(image, frame_count):
         showImage(image[frame], x_offset=i - MATRIX_WIDTH)
         counter = counter % 5
         if counter == 0:
-            frame = (frame + 1)  % (frame_count)
+            # for animated GIFs
+            # if image has multiple frames change frame on every 5th scroll step
+            frame = (frame + 1) % (frame_count)
         counter += 1
 
     _SCREEN_LOCK.release()
@@ -110,6 +122,9 @@ def handle_message(msg):
     if not messageQueue.isEmpty():
         nextMsg = messageQueue.dequeue()
 
+        # Display of message needs to happen in its own thread
+        # to avoid blocking the message read process. If not done,
+        # messages sent to bot during display activity would be ignored.
         thread = Thread(target=scroll_message, args=(nextMsg["image"], nextMsg["frame_count"]))
         thread.daemon = False
         thread.start()

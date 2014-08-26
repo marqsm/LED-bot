@@ -2,12 +2,18 @@ import urllib2 as urllib
 from cStringIO import StringIO
 from PIL import Image, ImageSequence
 
+# This componenets gets a URL for an image
+# returns a queue token with that PILLOW image
+# resizes and converts to RGBA and splits animated images to frames
+
 
 class ImageRenderer:
 
     def __init__(self, screenSize):
         self.screenSize = screenSize
 
+    # calculates size for image that fits new resolution
+    # without changing image aspect ratio
     def get_new_size(self, image, screen_width, screen_height):
         # returns new image h/w to fit screen
         img_width, img_height = image.size
@@ -19,6 +25,7 @@ class ImageRenderer:
         else:
             return (screen_width, img_height * screen_width / img_width)
 
+    # Get remote image, return image object
     def fetch_image(self, url):
         print('loadImage %s' % url)
 
@@ -34,6 +41,7 @@ class ImageRenderer:
 
         return image
 
+    # form queue token from message token
     def get_queue_token(self, msgToken):
         print("get_queue_token got an msgToken")
         print(msgToken)
@@ -41,6 +49,7 @@ class ImageRenderer:
         image = self.fetch_image(msgToken["url"])
         return self._get_queue_token_from_image(image)
 
+    # do image processing needed for queue token
     def _get_queue_token_from_image(self, image):
         queue_token = {}
         new_size = self.get_new_size(image, self.screenSize[0], self.screenSize[1])
