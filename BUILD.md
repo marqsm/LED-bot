@@ -25,11 +25,12 @@ Software
 
 First you need to install [LEDscape](https://github.com/osresearch/LEDscape/) on the Beaglebone.
 
-Follow their newly written [setup instructions](https://github.com/osresearch/LEDscape/blob/master/Setup.md). 
+Follow their newly written [setup instructions](https://github.com/osresearch/LEDscape/blob/master/Setup.md).
 
-Download [LED-bot](https://github.com/marqsm/LED-bot). 
+Download [LED-bot](https://github.com/marqsm/LED-bot).
 
-You'll need to satisfy some python dependencies
+    git clone https://github.com/marqsm/LED-bot
 
-* zulip
-* Pillow
+You can install the python dependencies using the `requirements.txt` file
+
+    pip install -r requirements.txt
