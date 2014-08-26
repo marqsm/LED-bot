@@ -30,6 +30,7 @@ class ImageRenderer:
 
         except:
             print("Print fetching the image failed")
+            image = None
 
         return image
 
