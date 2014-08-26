@@ -93,12 +93,16 @@ def show_message():
 def scroll_message(image, frame_count):
     max_x_offset = image[0].size[0] + 1
     frame = 0
+    counter = 0
 
     for i in xrange(max_x_offset + MATRIX_WIDTH):
         print("Showing image at offset %s frame %s / %s" % (i, frame, frame_count))
         time.sleep(1.0 / 60)
         showImage(image[frame], x_offset=i - MATRIX_WIDTH)
-        frame = (frame + 1) % frame_count
+        counter = counter % 5
+        if counter == 0:
+            frame = (frame + 1)  % (frame_count)
+        counter += 1
 
 
 def handle_message(msg):
