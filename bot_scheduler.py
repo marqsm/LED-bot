@@ -2,7 +2,9 @@ import messageQueue as MessageQueue
 import zulipRequestHandler as ZulipRequestHandler
 import zulip
 import opc
+from threading import Thread, Lock
 import time
+
 
 # LED Screen
 MAX_FRAME_COUNT = 100
@@ -29,6 +31,7 @@ zulipRequestHandler = ZulipRequestHandler.ZulipRequestHandler(zulipClient,
                                                               SCREEN_SIZE)
 opcClient = opc.Client(LED_SCREEN_ADDRESS)
 
+_SCREEN_LOCK = Lock()
 
 
 
@@ -73,6 +76,9 @@ def showImage(image, x_offset=0, y_offset=0):
 
 # Scroll image for frame_count
 def scroll_message(image, frame_count):
+
+    _SCREEN_LOCK.acquire()
+
     max_x_offset = image[0].size[0] + 1
     frame = 0
     counter = 0
@@ -86,29 +92,27 @@ def scroll_message(image, frame_count):
             frame = (frame + 1)  % (frame_count)
         counter += 1
 
+    _SCREEN_LOCK.release()
+
 
 def handle_message(msg):
-    if zulipRequestHandler.isBotMessage(msg):
-        queue_token = zulipRequestHandler.get_msg_queue_token(msg)
-        messageQueue.enqueue(queue_token)
-
-    # TODO - ADD TIMER / FRAME COUNTER
-    if not messageQueue.isEmpty():
-        print("handle_message from queue", queue_token)
-        nextMsg = messageQueue.dequeue()
-        print 'Dequed token ------------------------'
-        print nextMsg
-        scroll_message(nextMsg["image"], nextMsg["frame_count"])
-
-        # TODO: Show it on the screen
-
     # This will have to do ALL actions for the main loop.
     # Queue incoming messages
     # Check queue for the next message
     # Process that message
     # Show it to the screen
     #   - manage the displayed frames / scrolling etc
-    return None
+    if zulipRequestHandler.isBotMessage(msg):
+        queue_token = zulipRequestHandler.get_msg_queue_token(msg)
+        messageQueue.enqueue(queue_token)
+
+    # TODO - ADD TIMER / FRAME COUNTER
+    if not messageQueue.isEmpty():
+        nextMsg = messageQueue.dequeue()
+
+        thread = Thread(target=scroll_message, args=(nextMsg["image"], nextMsg["frame_count"]))
+        thread.daemon = False
+        thread.start()
 
 
 def main():
