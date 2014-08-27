@@ -10,7 +10,7 @@ Currently pipeline is working, supports to commands.
 | command                              | parameters         | 
 | ------------------------------------ | ------------------ |
 | ```led-bot show-image <imagename>``` | image needs to be on the same server & directory where bot is running.  |
-| ```led-bot show-text <text>```       | text supports currently only 1 word.  |
+| ```led-bot show-text <text>```       | maximum of [1000](https://github.com/marqsm/LED-bot/blob/master/textRenderer.py#L12) characters  |
 
 
 TODO:
