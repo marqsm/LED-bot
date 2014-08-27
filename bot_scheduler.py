@@ -217,7 +217,10 @@ class LEDBot(object):
             MATRIX_HEIGHT + y_offset  # lower
         ))
 
-        data = cropped_image.tobytes()
+        # We reverse the string, to adjust for some wonkiness with PIL output
+        # being RGB but OPC library "expecting" BRG.  (It may be something
+        # wonky in our hardware setup/config, too)
+        data = cropped_image.tobytes()[::-1]
 
         # dump data to LED display
         self.opcClient.put_data(data, channel=0)
