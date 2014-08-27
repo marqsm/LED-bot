@@ -1,7 +1,7 @@
 import urllib2 as urllib
 from cStringIO import StringIO
 from PIL import Image, ImageSequence
-
+import re
 # This componenets gets a URL for an image
 # returns a queue token with that PILLOW image
 # resizes and converts to RGBA and splits animated images to frames
@@ -31,10 +31,14 @@ class ImageRenderer:
 
         try:
             img_file = urllib.urlopen(url)
-            im = StringIO(img_file.read())
-            image = Image.open(im)
-            image.load()
-
+            headers = img_file.info()
+            # if size under 2MB and matches image type in header
+            if int(headers['Content-Length']) < 2000000 and re.match(r"image",headers['Content-Type']):
+                im = StringIO(img_file.read())
+                image = Image.open(im)
+                image.load()
+            else:
+                image = None
         except:
             print("Print fetching the image failed")
             image = None
