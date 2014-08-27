@@ -58,14 +58,27 @@ class ImageRenderer:
         queue_token = {}
         new_size = self.get_new_size(image, self.screenSize[0], self.screenSize[1])
         images = [
-            frame.convert("RGB").resize(new_size)
+            frame.convert("RGBA").resize(new_size)
 
             for frame in ImageSequence.Iterator(image)
         ]
 
-        queue_token["image"] = images
+        queue_token["image"] = map(self._get_black_background_images, images)
         queue_token["frame_count"] = len(images)
         queue_token["action"] = "scroll"
         queue_token["valid"] = True
 
         return queue_token
+
+    def _get_black_background_images(self, image):
+        """Create black background images from transperent images.
+
+        The images here are expected to be RGBA. Sending RGB images wouldn't
+        make much sense.
+
+        """
+
+        bg = Image.new("RGB", image.size, (0, 0, 0))
+        bg.paste(image, image)
+
+        return bg
