@@ -51,7 +51,8 @@ class ImageRenderer:
         print(msgToken)
         # TODO: add possible params
         image = self.fetch_image(msgToken["url"])
-        return self._get_queue_token_from_image(image)
+        return self._get_queue_token_from_image(image) if image is not None else None
+
 
     # do image processing needed for queue token
     def _get_queue_token_from_image(self, image):
