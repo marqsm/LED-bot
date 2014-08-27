@@ -83,7 +83,7 @@ def get_zulip_streams(email, api_key):
         return response.json()['streams']
 
     elif response.status_code == 401:
-        raise('check yo auth')
+        raise RuntimeError('check yo auth')
 
     else:
-        raise(':( we failed to GET streams.\n(%s)' % response)
+        raise RuntimeError(':( we failed to GET streams.\n(%s)' % response)

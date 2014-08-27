@@ -1,4 +1,5 @@
 # Standard library
+from os.path import abspath, dirname, join
 import re
 from Queue import Queue
 from threading import Thread, Lock
@@ -19,10 +20,12 @@ MATRIX_SIZE = MATRIX_WIDTH * MATRIX_HEIGHT
 # Where to find the LED screen.
 LED_SCREEN_ADDRESS = 'ledbone.local:7890'
 
+HERE = dirname(abspath(__file__))
+
 # Zulip Conf.
 ZULIP_USERNAME = "led-bot@students.hackerschool.com"
-# Zulip API_KEY is loaded from a file called API_KEY at the app root.
-with open('API_KEY', 'r') as api_file:
+# Zulip API_KEY is loaded from a file called API_KEY along-side this file.
+with open(join(HERE, 'API_KEY'), 'r') as api_file:
     API_KEY = api_file.read().strip()
 
 ###########################
