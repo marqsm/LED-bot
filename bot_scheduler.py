@@ -207,24 +207,19 @@ class LEDBot(object):
 
         """
 
-        # print("Image size", image.size)
-        my_pixels = []
         image_width, image_height = image.size
 
-        for i in xrange(0, MATRIX_SIZE):
-            x = i % MATRIX_WIDTH + x_offset
-            y = int(i / MATRIX_WIDTH) + y_offset
-            #a = None
-            if (x > 0) and (x < image_width) and (y > 0) and (y < image_height):
-                r, g, b, a = image.getpixel((x, y))
-                if a == 0:
-                    r, g, b = 0, 0, 0
-                my_pixels.append((b, g, r))
-            else:
-                my_pixels.append((0, 0, 0))
+        cropped_image = image.crop((
+            0+x_offset,  # left
+            0+y_offset,  # upper
+            MATRIX_WIDTH + x_offset,  # right
+            MATRIX_HEIGHT + y_offset  # lower
+        ))
+
+        pixels = cropped_image.getdata()
 
         # dump data to LED display
-        self.opcClient.put_pixels(my_pixels, channel=0)
+        self.opcClient.put_pixels(pixels, channel=0)
 
     def _start_listeners(self):
         for listener in self.listeners:
