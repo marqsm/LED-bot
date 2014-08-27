@@ -114,6 +114,58 @@ class Client(object):
             self.disconnect()
         return success
 
+    def put_data(self, data, channel=0):
+        """Send the list of pixel colors to the OPC server on the given channel.
+
+        channel: Which strand of lights to send the pixel colors to.
+            Must be an int in the range 0-255 inclusive.
+            0 is a special value which means "all channels".
+
+        pixels: A list of 3-tuples representing rgb colors.
+            Each value in the tuple should be in the range 0-255 inclusive.
+            For example: [(255, 255, 255), (0, 0, 0), (127, 0, 0)]
+            Floats will be rounded down to integers.
+            Values outside the legal range will be clamped.
+
+        Will establish a connection to the server as needed.
+
+        On successful transmission of pixels, return True.
+        On failure (bad connection), return False.
+
+        The list of pixel colors will be applied to the LED string starting
+        with the first LED.  It's not possible to send a color just to one
+        LED at a time (unless it's the first one).
+
+        """
+
+        self._debug('put_pixels: connecting')
+        is_connected = self._ensure_connected()
+        if not is_connected:
+            self._debug('put_pixels: not connected.  ignoring these pixels.')
+            return False
+
+        # build OPC message
+        len_data = int(len(data))
+        len_hi_byte = len_data / 256
+        len_lo_byte = len_data % 256
+
+        header = chr(channel) + chr(0) + chr(len_hi_byte) + chr(len_lo_byte)
+        message = header + data
+
+        self._debug('put_pixels: sending pixels to server')
+        try:
+            self._socket.send(message)
+        except socket.error:
+            self._debug('put_pixels: connection lost.  could not send pixels.')
+            self._socket = None
+            return False
+
+        if not self._long_connection:
+            self._debug('put_pixels: disconnecting')
+            self.disconnect()
+
+        return True
+
     def put_pixels(self, pixels, channel=0):
         """Send the list of pixel colors to the OPC server on the given channel.
 
@@ -122,7 +174,7 @@ class Client(object):
             0 is a special value which means "all channels".
 
         pixels: A list of 3-tuples representing rgb colors.
-            Each value in the tuple should be in the range 0-255 inclusive. 
+            Each value in the tuple should be in the range 0-255 inclusive.
             For example: [(255, 255, 255), (0, 0, 0), (127, 0, 0)]
             Floats will be rounded down to integers.
             Values outside the legal range will be clamped.
@@ -168,5 +220,3 @@ class Client(object):
             self.disconnect()
 
         return True
-
-

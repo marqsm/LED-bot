@@ -54,7 +54,7 @@ class ImageRenderer:
         queue_token = {}
         new_size = self.get_new_size(image, self.screenSize[0], self.screenSize[1])
         images = [
-            frame.convert("RGBA").resize(new_size)
+            frame.convert("RGB").resize(new_size)
 
             for frame in ImageSequence.Iterator(image)
         ]

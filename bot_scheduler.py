@@ -32,6 +32,7 @@ with open('API_KEY', 'r') as api_file:
 # message_queue is where incoming messages are stored and fetched from
 message_queue = Queue()
 
+
 class LEDBot(object):
 
     def __init__(self, listeners=None):
@@ -216,10 +217,10 @@ class LEDBot(object):
             MATRIX_HEIGHT + y_offset  # lower
         ))
 
-        pixels = cropped_image.getdata()
+        data = cropped_image.tobytes()
 
         # dump data to LED display
-        self.opcClient.put_pixels(pixels, channel=0)
+        self.opcClient.put_data(data, channel=0)
 
     def _start_listeners(self):
         for listener in self.listeners:
