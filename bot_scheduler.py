@@ -3,6 +3,7 @@ import re
 from Queue import Queue
 from threading import Thread, Lock
 import time
+import logging
 
 # Local library
 import imageRenderer as ImageRenderer
@@ -67,6 +68,10 @@ class LEDBot(object):
         self._start_listeners()
 
         print("Bot running... ")
+
+        # Set up logging.
+        logging.basicConfig(filename='led-bot.log',level=logging.INFO)
+
         # The main event loop, process any messages in the queue
         while True:
             time.sleep(0.1)
@@ -75,6 +80,8 @@ class LEDBot(object):
     def handle_message(self, msg, listener):
         token = self._process_message(msg)
         if token is not None:
+            # Add msg to log.
+            logging.info(msg)
             message_queue.put(token)
         self._send_response(token, msg, listener)
 
