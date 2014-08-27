@@ -32,6 +32,7 @@ with open('API_KEY', 'r') as api_file:
 # message_queue is where incoming messages are stored and fetched from
 message_queue = Queue()
 
+
 class LEDBot(object):
 
     def __init__(self, listeners=None):
@@ -207,24 +208,22 @@ class LEDBot(object):
 
         """
 
-        # print("Image size", image.size)
-        my_pixels = []
         image_width, image_height = image.size
 
-        for i in xrange(0, MATRIX_SIZE):
-            x = i % MATRIX_WIDTH + x_offset
-            y = int(i / MATRIX_WIDTH) + y_offset
-            #a = None
-            if (x > 0) and (x < image_width) and (y > 0) and (y < image_height):
-                r, g, b, a = image.getpixel((x, y))
-                if a == 0:
-                    r, g, b = 0, 0, 0
-                my_pixels.append((b, g, r))
-            else:
-                my_pixels.append((0, 0, 0))
+        cropped_image = image.crop((
+            0+x_offset,  # left
+            0+y_offset,  # upper
+            MATRIX_WIDTH + x_offset,  # right
+            MATRIX_HEIGHT + y_offset  # lower
+        ))
+
+        # We reverse the string, to adjust for some wonkiness with PIL output
+        # being RGB but OPC library "expecting" BRG.  (It may be something
+        # wonky in our hardware setup/config, too)
+        data = cropped_image.tobytes()[::-1]
 
         # dump data to LED display
-        self.opcClient.put_pixels(my_pixels, channel=0)
+        self.opcClient.put_data(data, channel=0)
 
     def _start_listeners(self):
         for listener in self.listeners:
