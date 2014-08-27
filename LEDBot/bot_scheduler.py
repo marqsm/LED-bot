@@ -248,8 +248,13 @@ class LEDBot(object):
             thread.daemon = False
             thread.start()
 
+def main():
+    """ Main entry point.
 
-if __name__ == '__main__':
+    Used in the console script we setup.
+
+    """
+
     from zulipRequestHandler import ZulipRequestHandler
     zulipRequestHandler = ZulipRequestHandler(ZULIP_USERNAME, API_KEY)
     led_bot = LEDBot(listeners=[zulipRequestHandler])
@@ -259,3 +264,7 @@ if __name__ == '__main__':
     # led_bot = LEDBot(listeners=[CLIHandler(), zulipRequestHandler])
 
     led_bot.run()
+
+
+if __name__ == '__main__':
+    main()
