@@ -69,6 +69,7 @@ setup(
     # have to be included in MANIFEST.in as well.
     package_data={
         # Include the font file.
+        'LEDBot': ['fonts/*.otf'],
     },
 
     # To provide executable scripts, use entry points in preference to the

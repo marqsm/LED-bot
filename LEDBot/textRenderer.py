@@ -4,8 +4,8 @@ from os.path import abspath, dirname, join
 # 3rd party library
 from PIL import Image, ImageFont, ImageDraw
 
-FONT_PATH = abspath(dirname(__file__))
-DEFAULT_FONT = join(FONT_PATH, 'NotoSansCJK-Bold.otf')
+FONT_DIR = join(abspath(dirname(__file__)), 'fonts')
+DEFAULT_FONT = join(FONT_DIR, 'NotoSansCJK-Bold.otf')
 
 class TextRenderer:
 
