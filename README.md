@@ -12,6 +12,13 @@ Currently pipeline is working, supports to commands.
 | ```led-bot show-image <imagename>``` | image needs to be on the same server & directory where bot is running.  |
 | ```led-bot show-text <text>```       | maximum of [1000](https://github.com/marqsm/LED-bot/blob/master/textRenderer.py#L12) characters  |
 
+## Installation instructions
+
+The [hardware](https://github.com/marqsm/LED-bot/wiki/Build---Hardware) and
+[software](https://github.com/marqsm/LED-bot/wiki/Build---Software)
+installation instructions are on the
+[Wiki](https://github.com/marqsm/LED-bot/wiki)
+
 
 TODO:
 See our issues page!
@@ -53,6 +60,8 @@ APPLICATION DESIGN / DEV GUIDE
 
 
 ![arch](./architecture.png)
+
+
 
 
 Created at [Hacker School](https://hackerschool.com), Summer 2014
