@@ -54,15 +54,10 @@ setup(
     # List run-time dependencies here.
     # These are just minimal requirements.  The canonical versions are
     # specified in the requirements.txt file.  Use that!
-    install_requires=[
-        'requests',
-        'Pillow',
-    ],
 
-    # Dependencies that are not on pypi
-    dependency_links = [
-        "https://github.com/zulip/python-zulip/archive/master.zip",
-    ],
+    # NOTE: We use just requirements.txt and don't bother with keeping this
+    # updated.
+    install_requires=[],
 
     # If there are data files included in your packages that need to be
     # installed, specify them here.  If using Python 2.6 or less, then these
@@ -81,3 +76,14 @@ setup(
         ],
     },
 )
+
+
+def install_requirements():
+    import subprocess
+    subprocess.check_call(['pip', 'install', '-r', 'requirements.txt'])
+
+
+if __name__ == '__main__':
+    import sys
+    if 'install' in sys.argv or 'develop' in sys.argv:
+        install_requirements()
