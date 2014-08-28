@@ -17,7 +17,7 @@ class Emoji():
             print("Created new pickle file with emoji dictionary.")
 
     def load_emoji_names(self):
-        f = open('./emoji.txt', 'r')
+        f = open('/home/debian/LED-bot/LEDbot/emoji.txt', 'r')
         EMOJI_NAMES = []
 
         try:
