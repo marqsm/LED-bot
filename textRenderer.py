@@ -1,5 +1,12 @@
 from PIL import Image, ImageFont, ImageDraw
+import emojiHandler as EmojiHandler
+import imageRenderer as ImageRenderer
 
+# LED Screen physical dimensions
+MAX_FRAME_COUNT = 100
+SCREEN_SIZE = (64, 32)
+MATRIX_WIDTH, MATRIX_HEIGHT = SCREEN_SIZE
+MATRIX_SIZE = MATRIX_WIDTH * MATRIX_HEIGHT
 
 class TextRenderer:
 
@@ -13,6 +20,12 @@ class TextRenderer:
 
         # new image and font
         self.font = ImageFont.truetype(font, 22)
+
+        # Emoji Handler
+        self.emoji_handler = EmojiHandler.Emoji()
+
+        # ImageRenderer
+        self.image_renderer = ImageRenderer.ImageRenderer(SCREEN_SIZE)
 
     def draw_text(self, text_to_send, text_color=None, bg_color=None):
         text_to_send = self.truncate_text(text_to_send)
@@ -33,11 +46,24 @@ class TextRenderer:
 
         return image
 
+    def pre_draw(self, text, text_color=None, bg_color=None):
+        sentence = []
+        for x in text:
+            if self.emoji_handler.check_emoji(x):
+                url = self.emoji_handler.emoji_directory[x]
+                img = self.image_renderer.fetch_image(url)
+                new_size = self.image_renderer.get_new_size(img, SCREEN_SIZE[0], SCREEN_SIZE[1])
+                img = img.convert("RGBA").resize(new_size)
+                sentence.append(img)
+            else:
+                sentence.append(self.draw_text(" " + x, text_color, bg_color))
+
+        return sentence
+
     def get_queue_token(self, msgToken):
         queue_token = {}
         # TODO: add possible params
-        queue_token['image'] = [self.draw_text(
-            ' '.join(msgToken['text']),
+        queue_token['image'] = [self.pre_draw(msgToken['text'],
             msgToken.get('color', None),
             msgToken.get('background-color', None)
         )]

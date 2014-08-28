@@ -141,6 +141,8 @@ class LEDBot(object):
 
         tokens = re.sub(self.BOT_MSG_PREFIX, '', msg["content"]).split()
 
+        # get index of emoji and its URL
+
         if tokens[0] == "show-image":
             token = {
                 "type" : "image",
