@@ -1,0 +1,11 @@
+Dana
+Daria Jung
+Jonathan Dahan
+Marcus Malka
+Puneeth Chaganti
+Sean Garborg
+Sophia Davis
+
+
+Generated using `git log --format='%aN' | sort -u > AUTHORS`.  Fix the
+`.mailmap` file to fix issues with duplicates.

@@ -1,2 +1,3 @@
+requests
 Pillow
 -e git+https://github.com/zulip/python-zulip.git#egg=zulip

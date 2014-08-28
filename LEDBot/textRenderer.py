@@ -1,10 +1,16 @@
+# Standard library
+from os.path import abspath, dirname, join
+
+# 3rd party library
 from PIL import Image, ImageFont, ImageDraw
 
+FONT_DIR = join(abspath(dirname(__file__)), 'fonts')
+DEFAULT_FONT = join(FONT_DIR, 'NotoSansCJK-Bold.otf')
 
 class TextRenderer:
 
-    def __init__(self, font="./NotoSansCJK-Bold.otf",
-                 font_color=(0, 120, 0), color_bg=(0, 0, 0)):
+    def __init__(self, font=DEFAULT_FONT, font_color=(0, 120, 0),
+                 color_bg=(0, 0, 0)):
 
         # params
         self.default_color_bg = color_bg
