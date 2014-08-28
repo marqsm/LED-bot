@@ -19,10 +19,9 @@ The [hardware](https://github.com/marqsm/LED-bot/wiki/Build---Hardware) and
 installation instructions are on the
 [Wiki](https://github.com/marqsm/LED-bot/wiki)
 
-The wiki also has more information about the software architecture and other
+The wiki also has more information about the software
+[architecture](https://github.com/marqsm/LED-bot/wiki/Architecture) and other
 things!
-
-![arch](./docs/architecture.png)
 
 ## Goals
 
