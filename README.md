@@ -24,7 +24,12 @@ things!
 
 ![arch](./docs/architecture.png)
 
+## Goals
 
+This project aims to be AWESOME to contribute to, especially for new Hacker
+Schoolers.  To begin contributing, look at the long list of
+[issues](https://github.com/marqsm/LED-bot/issues) we have!
 
+## Authors
 
 Created at [Hacker School](https://hackerschool.com), Summer 2014
