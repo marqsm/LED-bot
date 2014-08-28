@@ -31,10 +31,10 @@ class TextRenderer:
             bg_color = self.default_color_bg
 
         # Add padding below, because PIL sucks!
-        image = Image.new("RGB", (x, y+10), text_color)
+        image = Image.new("RGB", (x, y+10), bg_color)
 
         ImageDraw.Draw(image).text(
-            (0, 0), text_to_send, font=self.font, fill=bg_color
+            (0, 0), text_to_send, font=self.font, fill=text_color
         )
 
         return image
