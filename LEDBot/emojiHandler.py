@@ -34,9 +34,7 @@ class Emoji():
             emoji_d[emoji] = "https://zulip.com/static/third/gemoji/images/emoji/%s.png" % emoji.strip(':')
 
         # special add the HS emoji
-        emoji_d['hackerschool'] = "https://external-content.zulipcdn.net/1fd50dd9cd66190492ee5c1f \
-        3c82b49a5f6fdf45/687474703a2f2f7765622e6d69742e6564752f6a657373746573732f7777772f7265616c6d656d6f \
-        6a692f6861636b65727363686f6f6c2e706e67"
+        emoji_d[':hackerschool:'] = "https://external-content.zulipcdn.net/1fd50dd9cd66190492ee5c1f3c82b49a5f6fdf45/687474703a2f2f7765622e6d69742e6564752f6a657373746573732f7777772f7265616c6d656d6f6a692f6861636b65727363686f6f6c2e706e67"
 
         self.emoji_directory = emoji_d
 

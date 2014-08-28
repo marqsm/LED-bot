@@ -7,7 +7,6 @@
 :mountain_cableway:
 :non-potable_water:
 :potable_water:
-:hackerschool:
 :bookmark_tabs:
 :baby:
 :baby_bottle:
