@@ -1,3 +1,7 @@
+# Standard library
+from os.path import abspath, dirname, join
+
+# 3rd party library
 from PIL import Image, ImageFont, ImageDraw
 import emojiHandler as EmojiHandler
 import imageRenderer as ImageRenderer
@@ -8,10 +12,13 @@ SCREEN_SIZE = (64, 32)
 MATRIX_WIDTH, MATRIX_HEIGHT = SCREEN_SIZE
 MATRIX_SIZE = MATRIX_WIDTH * MATRIX_HEIGHT
 
+FONT_DIR = join(abspath(dirname(__file__)), 'fonts')
+DEFAULT_FONT = join(FONT_DIR, 'NotoSansCJK-Bold.otf')
+
 class TextRenderer:
 
-    def __init__(self, font="./NotoSansCJK-Bold.otf",
-                 font_color=(0, 120, 0), color_bg=(0, 0, 0)):
+    def __init__(self, font=DEFAULT_FONT, font_color=(0, 120, 0),
+                 color_bg=(0, 0, 0)):
 
         # params
         self.default_color_bg = color_bg
@@ -38,7 +45,7 @@ class TextRenderer:
             bg_color = self.default_color_bg
 
         # Add padding below, because PIL sucks!
-        image = Image.new("RGBA", (x, y+10), text_color)
+        image = Image.new("RGB", (x, y+10), text_color)
 
         ImageDraw.Draw(image).text(
             (0, 0), text_to_send, font=self.font, fill=bg_color

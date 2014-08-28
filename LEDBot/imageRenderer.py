@@ -51,7 +51,8 @@ class ImageRenderer:
         print(msgToken)
         # TODO: add possible params
         image = self.fetch_image(msgToken["url"])
-        return self._get_queue_token_from_image(image)
+        return self._get_queue_token_from_image(image) if image is not None else None
+
 
     # do image processing needed for queue token
     def _get_queue_token_from_image(self, image):
@@ -63,9 +64,22 @@ class ImageRenderer:
             for frame in ImageSequence.Iterator(image)
         ]
 
-        queue_token["image"] = images
+        queue_token["image"] = map(self._get_black_background_images, images)
         queue_token["frame_count"] = len(images)
         queue_token["action"] = "scroll"
         queue_token["valid"] = True
 
         return queue_token
+
+    def _get_black_background_images(self, image):
+        """Create black background images from transperent images.
+
+        The images here are expected to be RGBA. Sending RGB images wouldn't
+        make much sense.
+
+        """
+
+        bg = Image.new("RGB", image.size, (0, 0, 0))
+        bg.paste(image, image)
+
+        return bg

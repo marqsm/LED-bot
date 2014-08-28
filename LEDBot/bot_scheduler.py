@@ -16,15 +16,6 @@ SCREEN_SIZE = (64, 32)
 MATRIX_WIDTH, MATRIX_HEIGHT = SCREEN_SIZE
 MATRIX_SIZE = MATRIX_WIDTH * MATRIX_HEIGHT
 
-# Where to find the LED screen.
-LED_SCREEN_ADDRESS = 'ledbone.local:7890'
-
-# Zulip Conf.
-ZULIP_USERNAME = "led-bot@students.hackerschool.com"
-# Zulip API_KEY is loaded from a file called API_KEY at the app root.
-with open('API_KEY', 'r') as api_file:
-    API_KEY = api_file.read().strip()
-
 ###########################
 # Components
 ###########################
@@ -32,10 +23,12 @@ with open('API_KEY', 'r') as api_file:
 # message_queue is where incoming messages are stored and fetched from
 message_queue = Queue()
 
+
 class LEDBot(object):
 
-    def __init__(self, listeners=None):
+    def __init__(self, address, listeners=None):
 
+        self.address = address
         self.listeners = listeners if listeners is not None else []
 
         # If string starts with "@led-bot" or "led-bot"
@@ -47,7 +40,7 @@ class LEDBot(object):
         self.screen_width, self.screen_height = self.SCREEN_SIZE
         # opcClient is the Open Pixel Control client which provides the drivers
         # (using LEDscape) an API to the LED-screen
-        self.opcClient = opc.Client(LED_SCREEN_ADDRESS)
+        self.opcClient = opc.Client(address)
 
         # Renderers
         self.text_renderer = TextRenderer.TextRenderer()
@@ -62,7 +55,7 @@ class LEDBot(object):
         # gets messages from message_queue
         print('Trying to connect to LED-display...')
         if self.opcClient.can_connect():
-            print('connected to %s' % LED_SCREEN_ADDRESS)
+            print('connected to %s' % self.address)
 
         # Start up each of the listeners in a different thread
         self._start_listeners()
@@ -209,24 +202,22 @@ class LEDBot(object):
 
         """
 
-        # print("Image size", image.size)
-        my_pixels = []
         image_width, image_height = image.size
 
-        for i in xrange(0, MATRIX_SIZE):
-            x = i % MATRIX_WIDTH + x_offset
-            y = int(i / MATRIX_WIDTH) + y_offset
-            #a = None
-            if (x > 0) and (x < image_width) and (y > 0) and (y < image_height):
-                r, g, b, a = image.getpixel((x, y))
-                if a == 0:
-                    r, g, b = 0, 0, 0
-                my_pixels.append((b, g, r))
-            else:
-                my_pixels.append((0, 0, 0))
+        cropped_image = image.crop((
+            0+x_offset,  # left
+            0+y_offset,  # upper
+            MATRIX_WIDTH + x_offset,  # right
+            MATRIX_HEIGHT + y_offset  # lower
+        ))
+
+        # We reverse the string, to adjust for some wonkiness with PIL output
+        # being RGB but OPC library "expecting" BRG.  (It may be something
+        # wonky in our hardware setup/config, too)
+        data = cropped_image.tobytes()[::-1]
 
         # dump data to LED display
-        self.opcClient.put_pixels(my_pixels, channel=0)
+        self.opcClient.put_data(data, channel=0)
 
     def _start_listeners(self):
         for listener in self.listeners:
@@ -251,14 +242,36 @@ class LEDBot(object):
             thread.daemon = False
             thread.start()
 
+def main():
+    """ Main entry point.
 
-if __name__ == '__main__':
+    Used in the console script we setup.
+
+    """
+
     from zulipRequestHandler import ZulipRequestHandler
-    zulipRequestHandler = ZulipRequestHandler(ZULIP_USERNAME, API_KEY)
-    led_bot = LEDBot(listeners=[zulipRequestHandler])
+    from utils import get_config
 
-    # Uncomment the lines below to be able to test the bot from the CLI.
+    config = get_config()
+    ZULIP_USERNAME = config.get('zulip', 'username')
+    ZULIP_API_KEY = config.get('zulip', 'api_key')
+    LED_SCREEN_ADDRESS = config.get('main', 'led_screen_address')
+
+    zulipRequestHandler = ZulipRequestHandler(ZULIP_USERNAME, ZULIP_API_KEY)
+
+    led_bot = LEDBot(
+        address=LED_SCREEN_ADDRESS, listeners=[zulipRequestHandler]
+    )
+
+    ## Uncomment the lines below to be able to test the bot from the CLI.
     # from cli_handler import CLIHandler
-    # led_bot = LEDBot(listeners=[CLIHandler(), zulipRequestHandler])
+    # led_bot = LEDBot(
+    #     address=LED_SCREEN_ADDRESS,
+    #     listeners=[CLIHandler(), zulipRequestHandler]
+    # )
 
     led_bot.run()
+
+
+if __name__ == '__main__':
+    main()
