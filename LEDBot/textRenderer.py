@@ -67,13 +67,28 @@ class TextRenderer:
 
         return sentence
 
+    def concat_images(self, tokens):
+        total_width = 0
+        height = tokens[0].size[1]
+        for slide in tokens:
+            total_width += slide.size[0] + 1
+
+        new_image = Image.new("RGB", (total_width, height))
+
+        x_offset = 0
+
+        for slide in tokens:
+            new_image.paste(slide, (x_offset, 0))
+            x_offset += slide.size[0] + 1
+
+        return new_image
+
     def get_queue_token(self, msgToken):
         queue_token = {}
+        pre_draw = self.pre_draw(msgToken['text'], msgToken.get('color', None),
+            msgToken.get('background-color', None))
         # TODO: add possible params
-        queue_token['image'] = self.pre_draw(msgToken['text'],
-            msgToken.get('color', None),
-            msgToken.get('background-color', None)
-        )
+        queue_token['image'] = [self.concat_images(pre_draw)]
 
         queue_token["frame_count"] = 1
         queue_token["action"] = "scroll"
