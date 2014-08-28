@@ -9,7 +9,7 @@ class Emoji():
         self.init()
 
     def init(self):
-        if os.path.exists("emoji-dict.pickle") and self.load("emoji-dict.pickle"):
+        if os.path.exists("./emoji-dict.pickle") and self.load("./emoji-dict.pickle"):
             print("Emoji dictionary ready.")
         else:
             self.create_dict(self.load_emoji_names())
@@ -17,7 +17,7 @@ class Emoji():
             print("Created new pickle file with emoji dictionary.")
 
     def load_emoji_names(self):
-        f = open('emoji.txt', 'r')
+        f = open('./emoji.txt', 'r')
         EMOJI_NAMES = []
 
         try:
