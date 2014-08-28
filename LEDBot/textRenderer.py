@@ -60,7 +60,7 @@ class TextRenderer:
                 url = self.emoji_handler.emoji_directory[x]
                 img = self.image_renderer.fetch_image(url)
                 new_size = self.image_renderer.get_new_size(img, SCREEN_SIZE[0], SCREEN_SIZE[1])
-                img = img.convert("RGBA").resize(new_size)
+                img = img.convert("RGB").resize(new_size)
                 sentence.append(img)
             else:
                 sentence.append(self.draw_text(" " + x, text_color, bg_color))
@@ -70,10 +70,10 @@ class TextRenderer:
     def get_queue_token(self, msgToken):
         queue_token = {}
         # TODO: add possible params
-        queue_token['image'] = [self.pre_draw(msgToken['text'],
+        queue_token['image'] = self.pre_draw(msgToken['text'],
             msgToken.get('color', None),
             msgToken.get('background-color', None)
-        )]
+        )
 
         queue_token["frame_count"] = 1
         queue_token["action"] = "scroll"
