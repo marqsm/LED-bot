@@ -3,7 +3,7 @@ LED Bot
 
 ![marquee](./docs/marquee.gif)
 
-A LED application server. Stream images, messages and more to LEDs in your home, office, hacker space.
+A LED application server. Stream images, messages, emoji and more to LEDs in your home, office, hacker space.
 
 Currently pipeline is working, supports to commands.
 
@@ -11,6 +11,10 @@ Currently pipeline is working, supports to commands.
 | ------------------------------------ | ------------------ |
 | ```led-bot show-image <image-url>``` | An image url  |
 | ```led-bot show-text <text>```       | maximum of [1000](https://github.com/marqsm/LED-bot/blob/master/textRenderer.py#L12) characters  |
+
+At the moment LEDbot accepts input from [Hacker School's](https://hackerschool.com) internal chat system, Zulip, but it shouldn't hard to add other inputs (SMS, IRC, Slack, Web, etc). [Take a look at the code](https://github.com/marqsm/LED-bot/blob/master/LEDBot/bot_scheduler.py#L252) and write another listener!
+
+Output is [Open Pixel Control](http://openpixelcontrol.org/).
 
 ## Installation instructions
 
