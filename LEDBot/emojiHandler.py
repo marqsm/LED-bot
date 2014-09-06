@@ -1,36 +1,32 @@
 import pickle
-import os
+from os.path import dirname, exists, join
 import re
+
+HERE = dirname(__file__)
 
 class Emoji():
 
     def __init__(self):
         self.emoji_directory = dict()
+        self._pickle_path = join(HERE, 'emoji-dict.pickle')
         self.init()
 
     def init(self):
-        if os.path.exists("./emoji-dict.pickle") and self.load("./emoji-dict.pickle"):
+        if exists(self._pickle_path) and self.load(self._pickle_path):
             print("Emoji dictionary ready.")
+
         else:
             self.create_dict(self.load_emoji_names())
-            self.dump("emoji-dict.pickle")
+            self.dump(self._pickle_path)
             print("Created new pickle file with emoji dictionary.")
 
     def load_emoji_names(self):
-        f = open('/home/debian/LED-bot/LEDbot/emoji.txt', 'r')
-        EMOJI_NAMES = []
+        with open(join(HERE, 'emoji.txt')) as f:
+            return f.read().splitlines()
 
-        try:
-            for line in f: 
-                EMOJI_NAMES.append(line.strip())
-        finally: 
-            f.close()
-
-        return EMOJI_NAMES
-
-    def create_dict(self, EMOJI_NAMES): 
+    def create_dict(self, emoji_names):
         emoji_d = dict()
-        for emoji in EMOJI_NAMES:
+        for emoji in emoji_names:
             emoji_d[emoji] = "https://zulip.com/static/third/gemoji/images/emoji/%s.png" % emoji.strip(':')
 
         # special add the HS emoji
