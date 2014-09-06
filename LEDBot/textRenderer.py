@@ -18,10 +18,10 @@ DEFAULT_FONT = join(FONT_DIR, 'NotoSansCJK-Bold.otf')
 class TextRenderer:
 
     def __init__(self, font=DEFAULT_FONT, font_color=(0, 120, 0),
-                 color_bg=(0, 0, 0)):
+                 bg_color=(0, 0, 0)):
 
         # params
-        self.default_color_bg = color_bg
+        self.default_bg_color = bg_color
         self.default_font_color = font_color
         self.MAX_TEXT_LENGTH = 1000
 
@@ -42,7 +42,7 @@ class TextRenderer:
             text_color = self.default_font_color
 
         if bg_color is None:
-            bg_color = self.default_color_bg
+            bg_color = self.default_bg_color
 
         # Add padding below, because PIL sucks!
         image = Image.new("RGB", (x, y+10), bg_color)
