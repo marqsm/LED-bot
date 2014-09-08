@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hacker School Notes - LED Bot Docs</title>
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  
+
+  <style>
+    body {font-size: 90%;}
+    pre, code {font-size: 100%;}
+    h3, h4, h5, h6 {color: #2980b9; font-weight: 300}
+  </style>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> LED Bot Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+      <ul class="current">
+    
+    
+    
+    
+    
+    
+</ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="icon icon-reorder"></i>
+        <a href=".."></a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    <li>Hacker School Notes</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <h2 id="installation-notes">Installation Notes</h2>
+<h3 id="current-setup">Current Setup</h3>
+<p>Hacker School's LEDBot is awesome, though at present our cord situation is a little quirky (we have 3 cords).</p>
+<ul>
+<li>Large 5V Power Adapter - Goes to connector LED panel's barrel connector</li>
+<li>Small 5V Power Adapter - Connects to the Beaglebone Black's barrel connector</li>
+<li>Ethernet Cable - Connects to the Beaglebone Black's Ethernet port</li>
+</ul>
+<h3 id="possible-improvements">Possible Improvements</h3>
+<ul>
+<li>Consolidate power to a single line</li>
+<li>Move from ethernet to <a href="https://wiki.debian.org/WiFi/HowToUse#Command_Line">USB wifi adapter</a></li>
+</ul>
+<p>Notes:</p>
+<p>We tried to use a single power adapter for the Beaglebone and the LEDs but ran into stability issues. If we put a <a href="https://www.adafruit.com/products/1589">capacitor</a> on the power we could probably run a single line.</p>
+<p>When we tried to connect via wifi we noticed:</p>
+<ol>
+<li>Lag when streaming OPC packets over the network</li>
+<li>Periodic trouble getting a DHCP lease</li>
+</ol>
+<h3 id="connecting-to-the-beaglebone">Connecting to the Beaglebone</h3>
+<p>The beaglebone lives at <code>ledbone.local</code> on the Hacker School network. If you can't find it here is another way you can conncet.</p>
+<p>Find your IP Address with <code>ifconfig</code> or sometimes <code>ip addr</code></p>
+<p>You should see something like <code>inet 10.0.0.100 netmask 0xffff0000 broadcast 10.0.255.255</code></p>
+<p>Lets say our IP is 10.0.0.100</p>
+<h4 id="use-nmap-to-scan-the-local-network">Use nmap to scan the local network</h4>
+<p>On Linux:</p>
+<blockquote>
+<p>sudo apt-get install nmap</p>
+</blockquote>
+<p>Or Mac:</p>
+<blockquote>
+<p>brew install nmap</p>
+</blockquote>
+<p>Search the local network</p>
+<blockquote>
+<p>sudo nmap -sP 10.0.0.0/24</p>
+</blockquote>
+<p>Look for a result that contains <code>Texas Instruments</code> like:</p>
+<blockquote>
+<p>Nmap scan report for 10.0.0.102</p>
+<p>Host is up (0.0048s latency).</p>
+<p>MAC Address: 1C:BA:DE:AD:BE:EF (Texas Instruments)</p>
+</blockquote>
+<p>SSH into it</p>
+<blockquote>
+<p>ssh debian@10.0.0.102</p>
+</blockquote>
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../SETUP_HARDWARE/" class="btn btn-neutral float-right" title="Hardware Setup"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../DEV_GUIDE/" class="btn btn-neutral" title="Dev Guide"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+    <!-- Copyright etc -->
+    </p>
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a>, using the <a href="https://github.com/snide/sphinx_rtd_theme">Read the Docs theme</a>.
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <a class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      <span><a href="" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      <span style="margin-left: 15px"><a href="" style="color: #fcfcfc">Next &raquo;</a></span>
+    </span>
+</div>
+</body>
+</html>

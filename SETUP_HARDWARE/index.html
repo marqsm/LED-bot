@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hardware Setup - LED Bot Docs</title>
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  
+
+  <style>
+    body {font-size: 90%;}
+    pre, code {font-size: 100%;}
+    h3, h4, h5, h6 {color: #2980b9; font-weight: 300}
+  </style>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> LED Bot Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+      <ul class="current">
+    
+    
+    
+    
+    
+    
+</ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="icon icon-reorder"></i>
+        <a href=".."></a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    <li>Hardware Setup</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <h2 id="hardware-setup">Hardware Setup</h2>
+<p>After some fussing we found Trammell Hudson's really excellent <a href="http://trmm.net/Octoscroller">Octoscroller</a> and LEDscape project to interface with our low-level hardware.</p>
+<h3 id="adafruit">Adafruit</h3>
+<p>Buy a <a href="https://www.adafruit.com/product/1876">BeagleBone Black</a>, some <a href="https://www.adafruit.com/product/420">LED Panels</a> and a nice <a href="https://www.adafruit.com/products/658">5V power supply</a>. </p>
+<h3 id="osh-park">OSH Park</h3>
+<p>We also need an <a href="https://oshpark.com/shared_projects/7mSHNZcD">Octoscroller cape</a>. You can order the cape circuit board in sets of 3 from OSH Park! Share with a friend! The process takes two or three weeks.</p>
+<h3 id="digikey">Digikey</h3>
+<p>Make a <a href="http://www.digikey.com">DigiKey</a> order. Here are the parts you want:</p>
+<table>
+<thead>
+<tr>
+<th>Quantity</th>
+<th>Part Number</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>296-8503-5-ND</td>
+<td>8-bit bus transceiver</td>
+</tr>
+<tr>
+<td>8</td>
+<td>S9171-ND</td>
+<td>16 pin ribbon connector</td>
+</tr>
+<tr>
+<td>4</td>
+<td>S1012E-36-ND</td>
+<td>Breakable header pins</td>
+</tr>
+</tbody>
+</table>
+<h3 id="soldering">Soldering</h3>
+<p>Solder your hardware. The buffer IC goes on the underside of the circuit board. The hole in the ribbon cable connectors face towards the bottom of the PCB.</p>
+<p>These LED panels use a lot of power. Make sure you have an adequate power supply or you may experience funny issues!</p>
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../SETUP_SOFTWARE/" class="btn btn-neutral float-right" title="Software Setup"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../HACKER_SCHOOL_NOTES/" class="btn btn-neutral" title="Hacker School Notes"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+    <!-- Copyright etc -->
+    </p>
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a>, using the <a href="https://github.com/snide/sphinx_rtd_theme">Read the Docs theme</a>.
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <a class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      <span><a href="" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      <span style="margin-left: 15px"><a href="" style="color: #fcfcfc">Next &raquo;</a></span>
+    </span>
+</div>
+</body>
+</html>

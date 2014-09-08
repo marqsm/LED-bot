@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software Setup - LED Bot Docs</title>
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  
+
+  <style>
+    body {font-size: 90%;}
+    pre, code {font-size: 100%;}
+    h3, h4, h5, h6 {color: #2980b9; font-weight: 300}
+  </style>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> LED Bot Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+      <ul class="current">
+    
+    
+    
+    
+    
+    
+</ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="icon icon-reorder"></i>
+        <a href=".."></a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    <li>Software Setup</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <h2 id="software-setup">Software Setup</h2>
+<h3 id="debian">Debian</h3>
+<p>This tutorial assumes <a href="http://elinux.org/BeagleBoardDebian">Debian</a> or Ubuntu is installed on your Beaglebone (older revisions may use Angstrom Linux)! If you are not using one of these distros, it is recommended that you re-flash to ease the installation process.</p>
+<p>If things are not working or you find you're having PRU/Device Tree wonkiness, follow the <a href="https://github.com/Yona-Appletree/LEDscape/#installation-and-usage">instructions here</a> about replacing your am335x-boneblack.dtb</p>
+<h3 id="ledscape">LEDscape</h3>
+<p>Install <a href="https://github.com/osresearch/LEDscape/">LEDscape</a> on the Beaglebone.</p>
+<pre class="prettyprint well"><code>git clone https://github.com/osresearch/LEDscape/
+cd LEDscape
+make
+</code></pre>
+<p>Setup your matrix layout in <code>default.config</code> (in our case we have 4 panels in a 64x32 matrix). You specify the channel 0-7, and can chain up to 8 boards on each channel. Then the orientation (N,L,R,U) and x,y offset.</p>
+<pre class="prettyprint well"><code>matrix16
+0,6 N 0,0
+0,7 N 32,0
+1,6 N 0,16
+1,7 N 32,16
+</code></pre>
+<p>You can test things with:</p>
+<pre class="prettyprint well"><code>sudo ./bin/run-ledscape default.config
+sudo ./bin/identify default.config
+sudo ./bin/opc-rx default.config
+</code></pre>
+<p>If things aren't working:</p>
+<ul>
+<li>Take a look at LEDscape's newly written <a href="https://github.com/osresearch/LEDscape/blob/master/Setup.md">setup guide</a></li>
+<li>Muck around with <code>./src/net/opc-rx.c</code> and settings at the bottom of <code>./src/ledscape/ledscape.c</code></li>
+<li>Older <a href="http://trmm.net/LEDscape/Setup">LEDscape setup guide</a></li>
+<li><a href="https://groups.google.com/forum/#!forum/ledscape">Google Group</a></li>
+</ul>
+<h3 id="led-bot">LED-bot</h3>
+<p>Make sure your system has these packages installed so <a href="https://pillow.readthedocs.org/en/latest/">Pillow</a> will build with support for JPG and TTF rendering:</p>
+<pre class="prettyprint well"><code>sudo apt-get install build-essential libfreetype6-dev libjpeg-dev
+</code></pre>
+<p>Download <a href="https://github.com/marqsm/LED-bot">LED-bot</a>.</p>
+<pre class="prettyprint well"><code>git clone https://github.com/marqsm/LED-bot
+</code></pre>
+<p>You can install the led bot software by:</p>
+<pre class="prettyprint well"><code>python setup.py install
+</code></pre>
+<p>If you wish to install a development version, so you can test your changes, use</p>
+<pre class="prettyprint well"><code>python setup.py develop
+</code></pre>
+<p>To run the bot, run</p>
+<pre class="prettyprint well"><code>led-bot
+</code></pre>
+<h3 id="debian-start-up-script">Debian start-up script</h3>
+<p>Copy the <a href="https://github.com/marqsm/LED-bot/blob/master/startup/ledbot.sh">start-up script</a> to <code>/etc/init.d/</code></p>
+<p><code>sudo chmod +x ledbot.sh</code></p>
+<p><code>sudo update-rc.d ledbot.sh defaults</code></p>
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../USER_GUIDE/" class="btn btn-neutral float-right" title="User Guide"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../SETUP_HARDWARE/" class="btn btn-neutral" title="Hardware Setup"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+    <!-- Copyright etc -->
+    </p>
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a>, using the <a href="https://github.com/snide/sphinx_rtd_theme">Read the Docs theme</a>.
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <a class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      <span><a href="" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      <span style="margin-left: 15px"><a href="" style="color: #fcfcfc">Next &raquo;</a></span>
+    </span>
+</div>
+</body>
+</html>

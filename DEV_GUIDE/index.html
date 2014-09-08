@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dev Guide - LED Bot Docs</title>
+
+  
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+  
+
+  <style>
+    body {font-size: 90%;}
+    pre, code {font-size: 100%;}
+    h3, h4, h5, h6 {color: #2980b9; font-weight: 300}
+  </style>
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> LED Bot Docs</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+      <ul class="current">
+    
+    
+    
+    
+    
+    
+</ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="icon icon-reorder"></i>
+        <a href=".."></a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    <li>Dev Guide</li>
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <h2 id="development-guide">Development Guide</h2>
+<p>We welcome contributors from within and outside of Hacker School. Let's make LEDbot amazing!</p>
+<h3 id="setup-your-development-environment">Setup Your Development Environment</h3>
+<p>Theres many ways to dev this locally, but heres one recommendation</p>
+<ul>
+<li>
+<p>Install virtualenv</p>
+</li>
+<li>
+<p>Create a new virtualenv for the bot</p>
+<p><code>virtualenv ~/.pythons/ledbot</code></p>
+</li>
+<li>
+<p>Activate the virtualenv </p>
+<p>```
+source ~/.pythons/ledbot/bin/activate
+````</p>
+</li>
+<li>
+<p>Install the dependencies and the LED-bot source in development mode. </p>
+<p>```
+python setup.py develop
+````</p>
+</li>
+<li>
+<p>You can get an API key from your zulip account</p>
+</li>
+<li>
+<p>Run the bot</p>
+<p><code>python LEDBot/bot_scheduler.py</code></p>
+</li>
+<li>
+<p>Run the simulator (make sure your config specifies localhost:7890)</p>
+<p><code>python LEDBot/simulator.py</code></p>
+</li>
+<li>
+<p>If you wish to change the config, edit the file <code>~/.led-bot.conf</code></p>
+</li>
+</ul>
+<h3 id="notes-on-architecture">Notes On Architecture</h3>
+<p>At the moment our application accepts input from our internal chat system, Zulip, but it shouldn't be too hard to add other types of input (SMS, IRC, Slack, Web, etc) <a href="https://github.com/marqsm/LED-bot/blob/master/LEDBot/bot_scheduler.py#L252">take a look at the code here</a> and write another listener!</p>
+<p>Output is Open Pixel Control, so the software should operate with a variety of LED installations.</p>
+<table>
+<thead>
+<tr>
+<th>file</th>
+<th>purpose</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>bot_scheduler.py</td>
+<td>The main, handles displaying and scrolling text on the screen</td>
+</tr>
+<tr>
+<td>textRenderer.py</td>
+<td>Where the image for text gets created. Things like text colors and style, image pre-processing go here</td>
+</tr>
+<tr>
+<td>imageRenderer.py</td>
+<td>Where the images get processed</td>
+</tr>
+<tr>
+<td>opc.py</td>
+<td>Open Pixel Control handler</td>
+</tr>
+<tr>
+<td>zulipRequestHandler.py</td>
+<td>handle Zulip tasks</td>
+</tr>
+</tbody>
+</table>
+<p><img alt="arch" src="https://raw.githubusercontent.com/marqsm/LED-bot/master/docs/architecture.png" /></p>
+
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../HACKER_SCHOOL_NOTES/" class="btn btn-neutral float-right" title="Hacker School Notes"/>Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href=".." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+    <!-- Copyright etc -->
+    </p>
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a>, using the <a href="https://github.com/snide/sphinx_rtd_theme">Read the Docs theme</a>.
+</footer>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+<div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      <a class="icon icon-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      <span><a href="" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      <span style="margin-left: 15px"><a href="" style="color: #fcfcfc">Next &raquo;</a></span>
+    </span>
+</div>
+</body>
+</html>
