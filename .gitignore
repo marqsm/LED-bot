@@ -57,6 +57,10 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# mkdocs
+site/
+
+
 venv
 CONFIG.py
 zulip
