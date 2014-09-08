@@ -1,1 +1,8 @@
 site_name: LED Bot Docs
+pages:
+- [index.md, Home]
+- [DEV_GUIDE.md, Dev Guide]
+- [HACKER_SCHOOL_NOTES.md, Hacker School Notes]
+- [SETUP_HARDWARE.md, Hardware Setup]
+- [SETUP_SOFTWARE.md, Software Setup]
+- [USER_GUIDE.md, User Guide]
