@@ -33,7 +33,7 @@ class LEDBot(object):
 
         # If string starts with "@led-bot" or "led-bot"
         # fixme: duplicated
-        self.BOT_MSG_PREFIX = '^(\\@\\*\\*)*led-bot(\\*\\*)*'
+        #self.BOT_MSG_PREFIX = '^(\\@\\*\\*)*led-bot(\\*\\*)*'
 
         # Screen information
         self.SCREEN_SIZE = SCREEN_SIZE
@@ -103,16 +103,16 @@ class LEDBot(object):
     #### Private protocol #####################################################
 
     def _process_message(self, msg):
-        msgToken = self._tokenize_message(msg)
+        #msgToken = self._tokenize_message(msg)
 
-        if msgToken["type"] == "error":
+        if msg["type"] == "error":
             queue_token = None
 
-        elif msgToken["type"] == "text":
-            queue_token = self.text_renderer.get_queue_token(msgToken)
+        elif msg["type"] == "text":
+            queue_token = self.text_renderer.get_queue_token(msg)
 
-        elif msgToken["type"] == "image":
-            queue_token = self.image_renderer.get_queue_token(msgToken)
+        elif msg["type"] == "image":
+            queue_token = self.image_renderer.get_queue_token(msg)
 
         return queue_token
 
@@ -129,31 +129,6 @@ class LEDBot(object):
 
         listener.send_response(user_response, msg)
 
-    def _tokenize_message(self, msg):
-        """ Tokenizes a message. """
-
-        tokens = re.sub(self.BOT_MSG_PREFIX, '', msg["content"]).split()
-
-        # get index of emoji and its URL
-
-        if tokens[0] == "show-image":
-            token = {
-                "type" : "image",
-                "url": tokens[1]
-            }
-
-        elif tokens[0] == "show-text":
-            token = {
-                "type" : "text",
-                "text": tokens[1:]
-            }
-
-        else:
-            token = {
-                "type" : "error",
-            }
-
-        return token
 
     def _get_response(self, msg, status="ok"):
         """ Return a response to send to the user.

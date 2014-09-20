@@ -7,7 +7,7 @@ class WebFillerHandler(object):
 	"""docstring for WeatherReportListener"""
 	def __init__(self):
 		self.counter = 0
-		self.time_interval = 10.0
+		self.time_interval = 30.0
 		
 		# base url, params to pass to self.fetch_json()
 		self.data_sources = {
@@ -38,7 +38,10 @@ class WebFillerHandler(object):
 		formatted_data = self.formats[self.counter](self.fetch_json(self.data_sources[self.counter]))
 		print ("trying to send",formatted_data)
 		msg = {
-			'content': " ".join(formatted_data)
+			'text': formatted_data,
+			'type':'text',
+			'color':(0,0,120),
+			'background':(0,0,0)
 		}
 		self.callback(msg, self)
 
@@ -62,20 +65,20 @@ class WebFillerHandler(object):
 
 
 	def format_weather(self, json):
-		pieces = ["led-bot show-text","Current",json['currentobservation']['Temp'],json['time']['startPeriodName'][0],json['data']['weather'][0],json['data']['temperature'][0],json['time']['startPeriodName'][1],json['data']['weather'][1],json['data']['temperature'][1]]
+		pieces = ["Current",json['currentobservation']['Temp'],json['time']['startPeriodName'][0],json['data']['weather'][0],json['data']['temperature'][0],json['time']['startPeriodName'][1],json['data']['weather'][1],json['data']['temperature'][1]]
 		return pieces
 
 	def format_muni(self,json):
 	# example with SF MTA, change to transit agency of site
-		pieces = ["led-bot show-text","Muni",json['items'][0]['run_id'][:2],str(json['items'][0]['minutes']),"min",json['items'][1]['run_id'][:2],str(json['items'][1]['minutes']),"min"]
+		pieces = ["Muni",json['items'][0]['run_id'][:2],str(json['items'][0]['minutes']),"min",json['items'][1]['run_id'][:2],str(json['items'][1]['minutes']),"min"]
 		return pieces
 
 	def format_hn(self,json):
-		pieces = ["led-bot show-text",json['items'][0]['title'],json['items'][1]['title'],json['items'][2]['title']]
+		pieces = [json['items'][0]['title'],json['items'][1]['title'],json['items'][2]['title']]
 		return pieces
 
 	def format_quote(self,json):
-		pieces = ["led-bot show-text","quote:",json['quote']]
+		pieces = ["quote:",json['quote']]
 		return pieces
 
 
