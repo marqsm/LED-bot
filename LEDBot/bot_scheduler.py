@@ -250,6 +250,7 @@ def main():
     """
 
     from zulipRequestHandler import ZulipRequestHandler
+    from webFillerHandler import WebFillerHandler
     from utils import get_config
 
     config = get_config()
@@ -258,9 +259,9 @@ def main():
     LED_SCREEN_ADDRESS = config.get('main', 'led_screen_address')
 
     zulipRequestHandler = ZulipRequestHandler(ZULIP_USERNAME, ZULIP_API_KEY)
-
+    
     led_bot = LEDBot(
-        address=LED_SCREEN_ADDRESS, listeners=[zulipRequestHandler]
+        address=LED_SCREEN_ADDRESS, listeners=[zulipRequestHandler,WebFillerHandler()]
     )
 
     ## Uncomment the lines below to be able to test the bot from the CLI.
