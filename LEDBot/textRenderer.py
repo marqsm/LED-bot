@@ -59,7 +59,7 @@ class TextRenderer:
             # check if x is emoji, AND if emoji exists in the emoji dictionary
             if self.emoji_handler.check_emoji(x) and x in self.emoji_handler.emoji_directory:
                 url = self.emoji_handler.emoji_directory[x]
-                img = self.image_renderer.fetch_image(url)
+                img = Image.open(url)
                 new_size = self.image_renderer.get_new_size(img, SCREEN_SIZE[0], SCREEN_SIZE[1])
                 img = img.convert("RGB").resize(new_size)
                 sentence.append(img)
