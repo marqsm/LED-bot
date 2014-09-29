@@ -37,7 +37,7 @@ class WebRequestHandler(object):
 
 		print ("trying to send",data)
 		msg = {
-			'text': [data],
+			'text': data.split(),
 			'type':'text',
 			'color':(r,g,b),
 			'background':(0,0,0)
