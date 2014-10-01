@@ -18,13 +18,13 @@ class ZulipRequestHandler:
 
     def send_response(self, response, msg):
         """ Send the response to a user who sent a message to us. """
-        #response.update({
-        #    "type": msg["type"],
-        #    "subject": "test",   # topic within the stream
-        #    "to": self.get_msg_to(msg),  # name of the stream
-        #})
+        response.update({
+            "type": msg["data"]["type"],
+            "subject": msg["data"]["subject"],   # topic within the stream
+            "to": self.get_msg_to(msg["data"]),  # name of the stream
+        })
 
-        #self.zulipClient.send_message(response)
+        self.zulipClient.send_message(response)
 
     def get_msg_to(self, msg):
         # message sent by user is a private stream message
@@ -72,19 +72,21 @@ class ZulipRequestHandler:
             token = {
                 "type" : "image",
                 "url": tokens[1],
-            }
-
-        elif tokens[0] == "show-text":
-            token = {
-                "type" : "text",
-                "text": tokens[1:],
-                "color":(0,120,0)           
+                "data":msg
             }
 
         else:
             token = {
-                "type" : "error",
+                "type" : "text",
+                "text": tokens,
+                "color":(0,120,0),
+                "data":msg           
             }
+
+        #else:
+        #    token = {
+        #        "type" : "error",
+        #    }
 
         return token
 

@@ -233,12 +233,17 @@ def main():
     config = get_config()
     ZULIP_USERNAME = config.get('zulip', 'username')
     ZULIP_API_KEY = config.get('zulip', 'api_key')
+    HTTP_SERVER_HOST = config.get('http', 'host')
+    HTTP_SERVER_PORT = config.get('http', 'port')
     LED_SCREEN_ADDRESS = config.get('main', 'led_screen_address')
+    FILLER_TIME_INTERVAL = config.get('fillers','time_interval')
 
     zulipRequestHandler = ZulipRequestHandler(ZULIP_USERNAME, ZULIP_API_KEY)
+    webRequestHandler = WebRequestHandler(HTTP_SERVER_HOST,HTTP_SERVER_PORT)
+    webFillerHandler = WebFillerHandler(FILLER_TIME_INTERVAL)
     
     led_bot = LEDBot(
-        address=LED_SCREEN_ADDRESS, listeners=[zulipRequestHandler,WebFillerHandler(),WebRequestHandler()]
+        address=LED_SCREEN_ADDRESS, listeners=[zulipRequestHandler,webRequestHandler,webFillerHandler]
     )
 
     ## Uncomment the lines below to be able to test the bot from the CLI.

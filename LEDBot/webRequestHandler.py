@@ -1,17 +1,22 @@
-import datetime
 from bottle import route, request, run, template, Bottle
-from threading import Thread
+import datetime
 import time
-class WebRequestHandler(object):
-	"""docstring for WebRequestHandler"""
-	def __init__(self):
+from threading import Thread
+
+class WebRequestHandler:
+	"""WebRequestHandler, a RESTful API"""
+	def __init__(self,host='0.0.0.0',port=4000):
 		self.www = Bottle()
 		self.callback = None
 
 		@self.www.post('/show-text/')
 		def show_text():
-			self.send_text(request.forms.message,int(request.forms.r),int(request.forms.g),int(request.forms.b))
-			print 'Your message %s! In color %s, %s, %s</b>' % (request.forms.message, request.forms.r,request.forms.g,request.forms.b)
+			color = (0,255,0)
+			if 'message' in request.forms: 
+				if 'color' in request.forms:
+					color = tuple([int(i) for i in request.forms.color.split(",")])
+				self.send_text(request.forms.message,color)
+				print 'Your message %s! In color %s</b>' % (request.forms.message, color)
 
 		@self.www.post('/show-image/')
 		def show_image():
@@ -22,7 +27,7 @@ class WebRequestHandler(object):
 		def index(name):
 			return template('<b>Hello {{name}}</b>!', name=name)
 
-		server = Thread(target=self.www.run,kwargs=dict(host='localhost', port=4000));
+		server = Thread(target=self.www.run,kwargs=dict(host=host, port=port));
 		server.setDaemon(True)
 		server.start()
 
@@ -31,15 +36,14 @@ class WebRequestHandler(object):
 
 	def listen(self,callback):
 		self.callback = callback
-		#self.send_new_message()
 
-	def send_text(self,data,r=0,g=0,b=120):
+	def send_text(self,data="blank message",color=(0,255,0)):
 
 		print ("trying to send",data)
 		msg = {
 			'text': data.split(),
 			'type':'text',
-			'color':(r,g,b),
+			'color':color,
 			'background':(0,0,0)
 		}
 		self.callback(msg, self)

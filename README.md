@@ -15,13 +15,17 @@ Currently pipeline is working, supports these commands.
 | command                              | parameters         |
 | ------------------------------------ | ------------------ |
 | ```led-bot show-image <image-url>``` | An image url  |
-| ```led-bot show-text <text>```       | maximum of [1000](https://github.com/marqsm/LED-bot/blob/master/textRenderer.py#L12) characters  |
+| ```led-bot <text>```       | maximum of [1000](https://github.com/marqsm/LED-bot/blob/master/textRenderer.py#L12) characters  |
 
 #### HTTP API (POST)
 | end point                            | parameters         |
 | ------------------------------------ | ------------------ |
 | ```http://host:4000/show-image/```    | url=image url  |
-| ```http://host:4000/show-text/```     | message=your_text&r=100&g=0&b=0  |
+| ```http://host:4000/show-text/```     | message=your_text&color=255,0,0  |
+
+### JSON Feeds
+
+LEDBot can periodically pull data from arbitrary feeds (ex: weather, quotes, news articles) and add them to the queue. This functionality is still rough and in development see `webFillerHandler.py`
 
 
 At the moment LEDbot can accept input from
