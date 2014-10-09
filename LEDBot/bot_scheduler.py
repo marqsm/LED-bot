@@ -33,7 +33,7 @@ class LEDBot(object):
 
         # If string starts with "@led-bot" or "led-bot"
         # fixme: duplicated
-        self.BOT_MSG_PREFIX = '^(\\@\\*\\*)*led-bot(\\*\\*)*'
+        #self.BOT_MSG_PREFIX = '^(\\@\\*\\*)*led-bot(\\*\\*)*'
 
         # Screen information
         self.SCREEN_SIZE = SCREEN_SIZE
@@ -103,16 +103,16 @@ class LEDBot(object):
     #### Private protocol #####################################################
 
     def _process_message(self, msg):
-        msgToken = self._tokenize_message(msg)
+        #msgToken = self._tokenize_message(msg)
 
-        if msgToken["type"] == "error":
+        if msg["type"] == "error":
             queue_token = None
 
-        elif msgToken["type"] == "text":
-            queue_token = self.text_renderer.get_queue_token(msgToken)
+        elif msg["type"] == "text":
+            queue_token = self.text_renderer.get_queue_token(msg)
 
-        elif msgToken["type"] == "image":
-            queue_token = self.image_renderer.get_queue_token(msgToken)
+        elif msg["type"] == "image":
+            queue_token = self.image_renderer.get_queue_token(msg)
 
         return queue_token
 
@@ -129,31 +129,6 @@ class LEDBot(object):
 
         listener.send_response(user_response, msg)
 
-    def _tokenize_message(self, msg):
-        """ Tokenizes a message. """
-
-        tokens = re.sub(self.BOT_MSG_PREFIX, '', msg["content"]).split()
-
-        # get index of emoji and its URL
-
-        if tokens[0] == "show-image":
-            token = {
-                "type" : "image",
-                "url": tokens[1]
-            }
-
-        elif tokens[0] == "show-text":
-            token = {
-                "type" : "text",
-                "text": tokens[1:]
-            }
-
-        else:
-            token = {
-                "type" : "error",
-            }
-
-        return token
 
     def _get_response(self, msg, status="ok"):
         """ Return a response to send to the user.
@@ -250,17 +225,25 @@ def main():
     """
 
     from zulipRequestHandler import ZulipRequestHandler
+    from webFillerHandler import WebFillerHandler
+    from webRequestHandler import WebRequestHandler
+
     from utils import get_config
 
     config = get_config()
     ZULIP_USERNAME = config.get('zulip', 'username')
     ZULIP_API_KEY = config.get('zulip', 'api_key')
+    HTTP_SERVER_HOST = config.get('http', 'host')
+    HTTP_SERVER_PORT = config.get('http', 'port')
     LED_SCREEN_ADDRESS = config.get('main', 'led_screen_address')
+    FILLER_TIME_INTERVAL = config.get('fillers','time_interval')
 
     zulipRequestHandler = ZulipRequestHandler(ZULIP_USERNAME, ZULIP_API_KEY)
-
+    webRequestHandler = WebRequestHandler(HTTP_SERVER_HOST,HTTP_SERVER_PORT)
+    webFillerHandler = WebFillerHandler(FILLER_TIME_INTERVAL)
+    
     led_bot = LEDBot(
-        address=LED_SCREEN_ADDRESS, listeners=[zulipRequestHandler]
+        address=LED_SCREEN_ADDRESS, listeners=[zulipRequestHandler,webRequestHandler,webFillerHandler]
     )
 
     ## Uncomment the lines below to be able to test the bot from the CLI.
