@@ -4,6 +4,7 @@ from Queue import Queue
 from threading import Thread, Lock
 import time
 import logging
+from os.path import dirname, exists, join
 
 # Local library
 import imageRenderer as ImageRenderer
@@ -15,6 +16,7 @@ MAX_FRAME_COUNT = 100
 SCREEN_SIZE = (64, 32)
 MATRIX_WIDTH, MATRIX_HEIGHT = SCREEN_SIZE
 MATRIX_SIZE = MATRIX_WIDTH * MATRIX_HEIGHT
+HERE = dirname(__file__)
 
 ###########################
 # Components
@@ -63,7 +65,7 @@ class LEDBot(object):
         print("Bot running... ")
 
         # Set up logging.
-        logging.basicConfig(filename='led-bot.log',level=logging.INFO)
+        logging.basicConfig(filename=join(HERE,'led-bot.log'),level=logging.INFO)
 
         # The main event loop, process any messages in the queue
         while True:
