@@ -11,14 +11,26 @@ LEDBot is accessible over Zulip. You can send LEDbot a private message or post o
 | ```led-bot <text>```       | maximum of [1000](https://github.com/marqsm/LED-bot/blob/master/textRenderer.py#L12) characters  |
 
 
-### HTTP API (POST)
+#### HTTP API
 
-You can send messages and images to LEDBot over HTTP!
+A simple browser-based front-end is available at ```http://host:4000/```. Text and images can be sent via POST requests to API end points.
 
-| end point                            | parameters         |
-| ------------------------------------ | ------------------ |
+| end point                             | parameters         |
+| ------------------------------------  | ------------------ |
+| ```http://host:4000/```    			| browser-based front-end |
 | ```http://host:4000/show-image/```    | url=image url  |
-| ```http://host:4000/show-text/```     | message=your_text&color=255,100,0  |
+| ```http://host:4000/show-text/```     | message=your_text&color=255,0,0  |
+
+#### IRC
+
+Message or mention LEDbot with the following. By default LEDBot joins a Freenode channel called #ledbot 
+
+| command                            | Details         |
+| ------------------------------------  | ------------------ |
+| ```show <text>```    					| Displays given text  |
+| ```img <url>```     					| Displays image at given url  |
+| ```color <r> <g> <b>```     					| Sets text color  |
+
 
 ### JSON Feeds
 

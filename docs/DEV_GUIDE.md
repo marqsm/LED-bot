@@ -12,35 +12,25 @@ Theres many ways to dev this locally, but heres one recommendation
 
 - Create a new virtualenv for the bot
 
-    ```
     virtualenv ~/.pythons/ledbot
-    ```
 
 - Activate the virtualenv 
     
-    ```
     source ~/.pythons/ledbot/bin/activate
-    ```
-
+    
 - Install the dependencies and the LED-bot source in development mode. 
 
-    ```
     python setup.py develop
-    ```
 
 - You can get an API key from your zulip account
 
 - Run the bot
 
-    ```
     python LEDBot/bot_scheduler.py
-    ```
 
 - Run the simulator (make sure your config specifies localhost:7890)
 
-    ```
     python LEDBot/simulator.py
-    ```
 
 - If you wish to change the config, edit the file `~/.led-bot.conf`
 

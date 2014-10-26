@@ -26,7 +26,7 @@ Currently pipeline is working, supports these commands.
 
 #### HTTP
 
-A simple browser-based front-end is available at ```http://host:4000/```. Text and images can be sent via POST requets to API end points.
+A simple browser-based front-end is available at ```http://host:4000/```. Text and images can be sent via POST requests to API end points.
 
 | end point                             | parameters         |
 | ------------------------------------  | ------------------ |
