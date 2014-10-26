@@ -24,7 +24,7 @@ Make a [DigiKey](http://www.digikey.com) order. Here are the parts you want:
 ### Soldering
 
 
-Solder your hardware. The buffer IC goes on the underside of the circuit board. The hole in the ribbon cable connectors face towards the bottom of the PCB.
+Solder your hardware. The buffer IC goes on the underside of the circuit board. Solder this first. The hole in the ribbon cable connectors face towards the bottom of the PCB.
 
-These LED panels use a lot of power. Make sure you have an adequate power supply or you may experience funny issues!
+These LED panels can potentially use a lot of power. Make sure you have an adequate power supply (~1.5A panel) or you may experience unusual issues!
 
