@@ -13,6 +13,7 @@ __pycache__/
 
 # Distribution / packaging
 .Python
+LEDBot/include/
 env/
 bin/
 build/

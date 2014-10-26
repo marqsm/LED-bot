@@ -224,11 +224,14 @@ def main():
 
     Used in the console script we setup.
 
+    Comment out any handlers you do not wish to use
+
     """
 
     from zulipRequestHandler import ZulipRequestHandler
     from webFillerHandler import WebFillerHandler
     from webRequestHandler import WebRequestHandler
+    from ircRequestHandler import IRCBot
 
     from utils import get_config
 
@@ -239,13 +242,17 @@ def main():
     HTTP_SERVER_PORT = config.get('http', 'port')
     LED_SCREEN_ADDRESS = config.get('main', 'led_screen_address')
     FILLER_TIME_INTERVAL = config.get('fillers','time_interval')
+    IRC_SERVER = config.get('irc','host')
+    IRC_CHANNEL = config.get('irc','channel')
+    IRC_NICK = config.get('irc','nick')
 
     zulipRequestHandler = ZulipRequestHandler(ZULIP_USERNAME, ZULIP_API_KEY)
     webRequestHandler = WebRequestHandler(HTTP_SERVER_HOST,HTTP_SERVER_PORT)
     webFillerHandler = WebFillerHandler(FILLER_TIME_INTERVAL)
+    ircBot = IRCBot(IRC_CHANNEL,IRC_NICK,IRC_SERVER,port=6667)
     
     led_bot = LEDBot(
-        address=LED_SCREEN_ADDRESS, listeners=[zulipRequestHandler,webRequestHandler,webFillerHandler]
+        address=LED_SCREEN_ADDRESS, listeners=[zulipRequestHandler,webRequestHandler,webFillerHandler,ircBot]
     )
 
     ## Uncomment the lines below to be able to test the bot from the CLI.
