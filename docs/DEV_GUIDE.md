@@ -20,13 +20,13 @@ Theres many ways to dev this locally, but heres one recommendation
     
     ```
     source ~/.pythons/ledbot/bin/activate
-    ````
+    ```
 
 - Install the dependencies and the LED-bot source in development mode. 
 
     ```
     python setup.py develop
-    ````
+    ```
 
 - You can get an API key from your zulip account
 
@@ -58,6 +58,9 @@ Output is Open Pixel Control, so the software should operate with a variety of L
 | imageRenderer.py      | Where the images get processed                |
 | opc.py                | Open Pixel Control handler                    |
 | zulipRequestHandler.py| handle Zulip tasks                            |
+| webRequestHandler.py| handle web API tasks                            |
+| webFillerHandler.py| handle JSON feed fetch                            |
+| ircRequestHandler.py| handle IRC tasks                            |
 
 
 ![arch](https://raw.githubusercontent.com/marqsm/LED-bot/master/docs/architecture.png)

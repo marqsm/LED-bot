@@ -33,7 +33,7 @@ do_start () {
 		echo "Starting LEDscape"
         	echo "sleeping for 5"
  		sleep 5
-		bash -c 'cd /home/debian/LEDscape/; ./bin/run-ledscape > /dev/null 2>&1'
+		bash -c 'cd /home/debian/LEDscape/; ./bin/opc-rx > /dev/null 2>&1'
 		pgrep opc-rx > /var/run/opc-rx.pid
 
 	fi
@@ -67,11 +67,11 @@ do_status () {
 # Carry out specific functions when asked to by the system
 case "$1" in
   start)
-    echo "Starting LEDscape"
+    echo "Starting ledbot and ledscape"
     do_start
     ;;
   stop)
-    echo "Stopping LEDscape"
+    echo "Stopping ledbot and ledscape"
     # kill application you want to stop
     do_stop
     ;;
@@ -80,7 +80,7 @@ case "$1" in
     do_start
     ;;
   *)
-    echo "Usage: /etc/init.d/LEDscape {start|stop}"
+    echo "Usage: /etc/init.d/ledbot.sh {start|stop}"
     exit 1
     ;;
 esac
