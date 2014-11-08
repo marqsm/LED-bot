@@ -16,6 +16,15 @@ $(document).ready(function() {
       }               
     });
 
+    $("#bg-picker").spectrum({
+      color: "#000000",
+      change: function(color) {
+        var c = color.toRgb();
+        var cFormat = c.r+","+c.g+","+c.b;
+        $("#bg-picker").val(cFormat);
+      }               
+    });
+
   });
 
   function ajaxFormHandler(selector,dest,callback) {

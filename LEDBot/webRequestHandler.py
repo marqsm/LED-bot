@@ -24,14 +24,14 @@ class WebRequestHandler:
 	def listen(self,callback):
 		self.callback = callback
 
-	def send_text(self,data="blank message",color=(0,255,0)):
+	def send_text(self,data="blank message",color=(0,255,0),bg=(0,0,0)):
 
 		print ("trying to send",data)
 		msg = {
 			'text': data.split(),
 			'type':'text',
 			'color':color,
-			'background':(0,0,0)
+			'background':bg
 		}
 		self.callback(msg, self)
 
@@ -63,7 +63,8 @@ class WebRequestHandler:
 			if 'message' in request.forms: 
 				if 'color' in request.forms:
 					color = tuple([int(i) for i in request.forms.color.split(",")])
-				self.send_text(request.forms.message,color)
+					background = tuple([int(i) for i in request.forms.background.split(",")])
+				self.send_text(request.forms.message,color,background)
 				print 'Your message %s! In color %s</b>' % (request.forms.message, color)
 
 		@self.www.post('/show-image/')

@@ -18,6 +18,7 @@ class ZulipRequestHandler:
 
     def send_response(self, response, msg):
         """ Send the response to a user who sent a message to us. """
+
         response.update({
             "type": msg["data"]["type"],
             "subject": msg["data"]["subject"],   # topic within the stream
@@ -28,8 +29,12 @@ class ZulipRequestHandler:
 
     def get_msg_to(self, msg):
         # message sent by user is a private stream message
-        msgTo = msg["sender_email"]
-
+        if msg["type"] == "stream":
+            # user message was public
+            msgTo = msg["display_recipient"] # name of the stream
+        elif msg["type"] == "private":
+            # message sent by user is a private stream message
+            msgTo = msg["sender_email"]
         return msgTo
 
     def listen(self, callback):
