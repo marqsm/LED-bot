@@ -90,7 +90,7 @@ class TextRenderer:
     def get_queue_token(self, msgToken):
         queue_token = {}
         pre_draw = self.pre_draw(msgToken['text'], msgToken.get('color', None),
-            msgToken.get('background-color', None))
+            msgToken.get('background', None))
         # TODO: add possible params
         queue_token['image'] = [self.concat_images(pre_draw)]
 

@@ -5,7 +5,7 @@ import datetime
 
 class WebFillerHandler:
 	"""Example fillers from the web """
-	def __init__(self,time=30.0):
+	def __init__(self,time=90.0):
 		self.counter = 0
 		self.time_interval = float(time)
 
@@ -14,17 +14,19 @@ class WebFillerHandler:
 		# base url, params to pass to self.fetch_json()
 		self.data_sources = {
 		0 : ("http://forecast.weather.gov/MapClick.php",{'lat':'37.7915388','lon':'-122.4200488','FcstType':'json' }),
-		1 : ("http://proximobus.appspot.com/agencies/sf-muni/stops/16826/predictions.json",None),
-		2 : ("http://api.ihackernews.com/page",None),
-		3 : ("http://iheartquotes.com/api/v1/random",{'format':'json','max_characters':'200','source':'computer'})
+#		1 : ("http://proximobus.appspot.com/agencies/sf-muni/stops/16826/predictions.json",None),
+		1 : ("http://api.ihackernews.com/page",None),
+#		3 : ("http://iheartquotes.com/api/v1/random",{'format':'json','max_characters':'200','source':'computer'}),
+		2 : ("https://ajax.googleapis.com/ajax/services/feed/load?v=1.0&num=3&q=http%3A%2F%2Fnews.google.com%2Fnews%3Foutput%3Drss",None)
 		}
 		
 		# how to format given results
 		self.formats = { 
 		0 : self.format_weather,
-		1 : self.format_muni,
-		2 : self.format_hn,
-		3 : self.format_quote
+#		1 : self.format_muni,
+		1 : self.format_hn,
+#		3 : self.format_quote
+		2: self.format_news
 		}
 		
 		self.t = threading.Timer(self.time_interval, self.send_new_message).start()
@@ -71,7 +73,7 @@ class WebFillerHandler:
 
 	def format_weather(self, json):
 		try:
-			pieces = ["Current",json['currentobservation']['Temp'],json['time']['startPeriodName'][0],json['data']['weather'][0],json['data']['temperature'][0],json['time']['startPeriodName'][1],json['data']['weather'][1],json['data']['temperature'][1]]
+			pieces = [":sun_with_face:",":cloud:","Current",json['currentobservation']['Temp'],json['time']['startPeriodName'][0],json['data']['weather'][0],json['data']['temperature'][0],json['time']['startPeriodName'][1],json['data']['weather'][1],json['data']['temperature'][1]]
 			return pieces
 		except:
 			return self.fail_msg
@@ -79,7 +81,7 @@ class WebFillerHandler:
 	def format_muni(self,json):
 		# example with SF MTA, change to transit agency of installation site
 		try:
-			pieces = ["Muni",json['items'][0]['run_id'][:2],str(json['items'][0]['minutes']),"min",json['items'][1]['run_id'][:2],str(json['items'][1]['minutes']),"min"]
+			pieces = [":bus:",json['items'][0]['run_id'][:2],str(int(json['items'][0]['minutes'])),"min",json['items'][1]['run_id'][:2],str(int(json['items'][1]['minutes'])),"min"]
 			return pieces
 		except:
 			return self.fail_msg
@@ -97,6 +99,15 @@ class WebFillerHandler:
 			return pieces
 		except:
 			return self.fail_msg
-
+	
+	def format_news(self,json):
+		try:
+			pieces = []
+			for entry in json['responseData']['feed']['entries']:
+				pieces.append(":newspaper:")
+				pieces.append(entry['title'])
+			return pieces
+		except:
+			return self.fail_msg
 
 
