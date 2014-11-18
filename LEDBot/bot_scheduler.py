@@ -232,6 +232,7 @@ def main():
     from webFillerHandler import WebFillerHandler
     from webRequestHandler import WebRequestHandler
     from ircRequestHandler import IRCBot
+    from mqttHandler import mqttHandler
 
     from utils import get_config
 
@@ -248,11 +249,12 @@ def main():
 
     zulipRequestHandler = ZulipRequestHandler(ZULIP_USERNAME, ZULIP_API_KEY)
     webRequestHandler = WebRequestHandler(HTTP_SERVER_HOST,HTTP_SERVER_PORT)
-    webFillerHandler = WebFillerHandler(FILLER_TIME_INTERVAL)
-    ircBot = IRCBot(IRC_CHANNEL,IRC_NICK,IRC_SERVER,port=6667)
-    
+    mqttHandler = mqttHandler()
+#    ircBot = IRCBot(IRC_CHANNEL,IRC_NICK,IRC_SERVER,port=6667)
+#    webFillerHandler = WebFillerHandler(FILLER_TIME_INTERVAL)
+ 
     led_bot = LEDBot(
-        address=LED_SCREEN_ADDRESS, listeners=[zulipRequestHandler,webRequestHandler,webFillerHandler,ircBot]
+        address=LED_SCREEN_ADDRESS, listeners=[zulipRequestHandler,webRequestHandler,mqttHandler]
     )
 
     ## Uncomment the lines below to be able to test the bot from the CLI.

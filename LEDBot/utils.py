@@ -32,7 +32,15 @@ def create_config_file():
 
         # web fillers
         config.add_section('fillers')
-        config.set('fillers', 'time_interval', '45.0')
+        config.set('fillers', 'time_interval', '200.0')
+
+        # mqtt
+        config.add_section('mqtt')
+        config.set('mqtt', 'host', 'test.mosquitto.org')
+        config.set('mqtt', 'port', '1883')
+        config.set('mqtt', 'channel', 'ledbot/')
+        config.set('mqtt', 'user', '')
+        config.set('mqtt', 'pass', '')
 
         config.write(f)
 
