@@ -44,6 +44,10 @@ Message or mention LEDbot with the following
 | ```img <url>```     					| Displays image at given url  |
 | ```color <r> <g> <b>```     					| Sets text color  |
 
+#### MQTT Push
+
+LEDBot can connect to a [MQTT](http://www.eclipse.org/paho/) broker and subscribe to channels for "push" notifications. This functionality is very minimal at the moment and can be expanded upon with additional parameters. By default LEDBot listens to channel `ledbot/` on the public broker `test.mosquitto.org`
+
 ### JSON Feeds
 
 LEDBot can periodically pull data from arbitrary feeds (ex: weather, quotes, news articles) and add them to the queue. This functionality is still rough and in development see `webFillerHandler.py`
