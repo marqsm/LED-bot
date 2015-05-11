@@ -8,7 +8,7 @@ class IRCBot(irc.bot.SingleServerIRCBot):
 		irc.bot.SingleServerIRCBot.__init__(self,[(server,port)],nick,nick)
 		self.channel = channel
 		self.debug = True
-		self.default_color = (0,255,0)
+		self.default_color = (0,0,255)
 		self.default_bg = (0,0,0)
 		self.callback = None
 
@@ -20,14 +20,14 @@ class IRCBot(irc.bot.SingleServerIRCBot):
 		self.callback = callback
 		self.start()
 
-	def send_text(self,data="blank message",color=(0,255,0),background=(0,0,0)):
+	def send_text(self,data="blank message",color=(0,0,255),background=(0,0,0)):
 
 		print ("trying to send",data)
 		msg = {
 			'text': data.split(),
 			'type':'text',
 			'color':color,
-			'background':(0,0,0)
+			'background':background
 		}
 		try:
 			self.callback(msg, self)

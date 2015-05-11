@@ -3,7 +3,7 @@ Installation Notes
 
 ### Current Setup
 
-Hacker School's LEDBot is awesome, though at present our cord situation is a little quirky (we have 3 cords).
+Recurse Center's LEDBot is awesome, though at present our cord situation is a little quirky (we have 3 cords).
 
 * Large 5V Power Adapter - Goes to connector LED panel's barrel connector
 * Small 5V Power Adapter - Connects to the Beaglebone Black's barrel connector
@@ -25,7 +25,7 @@ When we tried to connect via wifi we noticed:
 
 ### Connecting to the Beaglebone
 
-The beaglebone lives at `ledbone.local` on the Hacker School network. If you can't find it here is another way you can conncet.
+The beaglebone lives at `ledbone.local` on the Recurse Center network. If you can't find it here is another way you can conncet.
 
 Find your IP Address with `ifconfig` or sometimes `ip addr`
 
