@@ -7,10 +7,10 @@ import emojiHandler as EmojiHandler
 import imageRenderer as ImageRenderer
 
 # LED Screen physical dimensions
-MAX_FRAME_COUNT = 100
-SCREEN_SIZE = (64, 32)
-MATRIX_WIDTH, MATRIX_HEIGHT = SCREEN_SIZE
-MATRIX_SIZE = MATRIX_WIDTH * MATRIX_HEIGHT
+#MAX_FRAME_COUNT = 100
+#SCREEN_SIZE = (64, 32)
+#MATRIX_WIDTH, MATRIX_HEIGHT = SCREEN_SIZE
+#MATRIX_SIZE = MATRIX_WIDTH * MATRIX_HEIGHT
 
 FONT_DIR = join(abspath(dirname(__file__)), 'fonts')
 DEFAULT_FONT = join(FONT_DIR, 'NotoSansCJK-Bold.otf')
@@ -18,12 +18,14 @@ DEFAULT_FONT = join(FONT_DIR, 'NotoSansCJK-Bold.otf')
 class TextRenderer:
 
     def __init__(self, font=DEFAULT_FONT, font_color=(0, 120, 0),
-                 bg_color=(0, 0, 0)):
+                 bg_color=(0, 0, 0),screen_size=(0,0)):
 
         # params
         self.default_bg_color = bg_color
         self.default_font_color = font_color
         self.MAX_TEXT_LENGTH = 1000
+        self.SCREEN_SIZE = screen_size
+        self.MATRIX_SIZE =  self.SCREEN_SIZE[0] * self.SCREEN_SIZE[1]
 
         # new image and font
         self.font = ImageFont.truetype(font, 22)
@@ -32,7 +34,7 @@ class TextRenderer:
         self.emoji_handler = EmojiHandler.Emoji()
 
         # ImageRenderer
-        self.image_renderer = ImageRenderer.ImageRenderer(SCREEN_SIZE)
+        self.image_renderer = ImageRenderer.ImageRenderer(self.SCREEN_SIZE)
 
     def draw_text(self, text_to_send, text_color=None, bg_color=None):
         text_to_send = self.truncate_text(text_to_send)
@@ -63,7 +65,7 @@ class TextRenderer:
                     img = Image.open(url)
                 except:
                     img = Image.open(self.emoji_handler.emoji_directory[":cat:"])
-                new_size = self.image_renderer.get_new_size(img, SCREEN_SIZE[0], SCREEN_SIZE[1])
+                new_size = self.image_renderer.get_new_size(img, self.SCREEN_SIZE[0], self.SCREEN_SIZE[1])
                 img = img.convert("RGB").resize(new_size)
                 sentence.append(img)
             else:

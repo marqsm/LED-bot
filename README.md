@@ -9,9 +9,7 @@ LEDBot is a scheduler and application server. You can use it to stream images, m
 your home, office, school or hacker space.
 
 At the moment LEDbot can accept input from
-[Hacker School's](https://hackerschool.com) internal chat system, Zulip, a web front-end and API, IRC and fetch arbitrary JSON feeds. It shouldn't be difficult to add other types of input (SMS, Slack,
-etc). [Take a look at the code](https://github.com/marqsm/LED-bot/blob/master/LEDBot/bot_scheduler.py#L252)
-and write another listener!
+[Recurse Center's](https://recurse.com) internal chat system, Zulip, a web front-end and API, Slack, IRC and fetch arbitrary JSON feeds. It shouldn't be difficult to add other types of input. [Take a look at the code](https://github.com/marqsm/LED-bot/blob/master/LEDBot/bot_scheduler.py#L252) and write another listener!
 
 [![Emoji in LED form](http://img.youtube.com/vi/J9WWJnb6t8M/0.jpg)](http://www.youtube.com/watch?v=J9WWJnb6t8M)
 
@@ -44,6 +42,13 @@ Message or mention LEDbot with the following
 | ```img <url>```     					| Displays image at given url  |
 | ```color <r> <g> <b>```     					| Sets text color  |
 
+### Slack
+
+LEDBot now has basic support for Slack. Register your bot and then send a message @ledbot.
+
+e.g. `@ledbot: hello, world` will print `hello, world`
+
+
 #### MQTT Push
 
 LEDBot can connect to a [MQTT](http://www.eclipse.org/paho/) broker and subscribe to channels for "push" notifications. This functionality is very minimal at the moment and can be expanded upon with additional parameters. By default LEDBot listens to channel `ledbot/` on the public broker `test.mosquitto.org`
@@ -52,11 +57,9 @@ LEDBot can connect to a [MQTT](http://www.eclipse.org/paho/) broker and subscrib
 
 LEDBot can periodically pull data from arbitrary feeds (ex: weather, quotes, news articles) and add them to the queue. This functionality is still rough and in development see `webFillerHandler.py`
 
-
 Output is [Open Pixel Control](http://openpixelcontrol.org/).
 
-LEDBot uses
-[NYC Resistor's](http://www.nycresistor.com/2013/09/12/octoscroller/)
+LEDBot uses [NYC Resistor's](http://www.nycresistor.com/2013/09/12/octoscroller/)
 [LEDscape](https://github.com/osresearch/LEDscape) as our low-level interface and a [Noto Font](https://code.google.com/p/noto/) to support Latin, Cyrillic, Japanese, Chinese and Korean character sets.
 
 ## Installation instructions
@@ -66,10 +69,9 @@ The documentation for the project is on
 
 ## Goals
 
-This project aims to be AWESOME to contribute to, especially for new Hacker
-Schoolers.  To begin contributing, look at the long list of
+This project aims to be AWESOME to contribute to, especially for new Recursers.  To begin contributing, look at the long list of
 [issues](https://github.com/marqsm/LED-bot/issues) we have!
 
 ## Authors
 
-Created at [Hacker School](https://hackerschool.com), Summer 2014
+Created at [Recurse Center](https://recurse.com) (formerly Hacker School), Summer 2014

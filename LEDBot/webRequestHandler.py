@@ -24,7 +24,7 @@ class WebRequestHandler:
 	def listen(self,callback):
 		self.callback = callback
 
-	def send_text(self,data="blank message",color=(0,255,0),bg=(0,0,0)):
+	def send_text(self,data="blank message",color=(255,255,255),bg=(0,0,0)):
 
 		print ("trying to send",data)
 		msg = {

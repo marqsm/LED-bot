@@ -45,7 +45,7 @@ class LEDBot(object):
         self.opcClient = opc.Client(address)
 
         # Renderers
-        self.text_renderer = TextRenderer.TextRenderer()
+        self.text_renderer = TextRenderer.TextRenderer(screen_size=self.SCREEN_SIZE)
         self.image_renderer = ImageRenderer.ImageRenderer(self.SCREEN_SIZE)
 
         self._lock = Lock()
@@ -233,6 +233,8 @@ def main():
     from webRequestHandler import WebRequestHandler
     from ircRequestHandler import IRCBot
     from mqttHandler import mqttHandler
+    from slackRequestHandler import slackRequestHandler
+
 
     from utils import get_config
 
@@ -247,14 +249,14 @@ def main():
     IRC_CHANNEL = config.get('irc','channel')
     IRC_NICK = config.get('irc','nick')
 
-    zulipRequestHandler = ZulipRequestHandler(ZULIP_USERNAME, ZULIP_API_KEY)
+#   zulipRequestHandler = ZulipRequestHandler(ZULIP_USERNAME, ZULIP_API_KEY)
     webRequestHandler = WebRequestHandler(HTTP_SERVER_HOST,HTTP_SERVER_PORT)
-    mqttHandler = mqttHandler()
-#    ircBot = IRCBot(IRC_CHANNEL,IRC_NICK,IRC_SERVER,port=6667)
-#    webFillerHandler = WebFillerHandler(FILLER_TIME_INTERVAL)
- 
+#   mqttHandler = mqttHandler()
+#   ircBot = IRCBot(IRC_CHANNEL,IRC_NICK,IRC_SERVER,port=6667)
+#   webFillerHandler = WebFillerHandler(FILLER_TIME_INTERVAL)
+    slackRequestHandler = slackRequestHandler("")
     led_bot = LEDBot(
-        address=LED_SCREEN_ADDRESS, listeners=[zulipRequestHandler,webRequestHandler,mqttHandler]
+        address=LED_SCREEN_ADDRESS, listeners=[webRequestHandler,slackRequestHandler]
     )
 
     ## Uncomment the lines below to be able to test the bot from the CLI.
